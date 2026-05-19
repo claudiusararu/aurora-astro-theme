@@ -1,0 +1,134 @@
+---
+type ImageAsset = string | { url?: string; alt?: string } | null | undefined;
+type TestimonialItem = {
+  quote?: string;
+  name?: string;
+  role?: string;
+  avatar?: ImageAsset;
+};
+
+interface Props {
+  heading?: string;
+  quotes?: string;
+  testimonialItems?: TestimonialItem[];
+}
+
+const defaultTestimonials: Required<Omit<TestimonialItem, "avatar">>[] = [
+  {
+    quote: "Aurora transformed how our team ships. We went from monthly releases to weekly, and the quality actually improved. It's the tool we didn't know we needed.",
+    name: "Sarah Chen",
+    role: "VP Engineering, Vertex Labs",
+  },
+  {
+    quote: "We evaluated everything on the market before choosing Aurora. The analytics alone justified the switch. Our team velocity is up 40% in three months.",
+    name: "Marcus Rivera",
+    role: "CTO, Pulse Health",
+  },
+  {
+    quote: "The onboarding experience is remarkable. We had 60 engineers productive on day one. No training sessions, no friction, just results from the start.",
+    name: "Emily Nakamura",
+    role: "Head of Product, Helix Finance",
+  },
+];
+
+const {
+  heading = "Trusted by modern teams",
+  quotes = "",
+  testimonialItems,
+} = Astro.props;
+
+function initialsFromName(name: string): string {
+  const initials = name
+    .split(/\s+/)
+    .map((part) => part.trim()[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+  return initials || "??";
+}
+
+function imageUrl(image: ImageAsset): string {
+  if (typeof image === "string") return image;
+  return image?.url ?? "";
+}
+
+function imageAlt(image: ImageAsset): string {
+  if (typeof image === "object" && image?.alt) return image.alt;
+  return "";
+}
+
+function normalizeTestimonial(item: TestimonialItem) {
+  return {
+    quote: item.quote ?? "",
+    name: item.name ?? "",
+    role: item.role ?? "",
+    avatar: item.avatar ?? null,
+  };
+}
+
+const structuredTestimonials = Array.isArray(testimonialItems)
+  ? testimonialItems.map(normalizeTestimonial).filter((item) => item.quote || item.name || item.role || imageUrl(item.avatar))
+  : [];
+const legacyTestimonials = quotes
+  .split("\n")
+  .map((line) => line.trim())
+  .filter(Boolean)
+  .map((line) => {
+    const [quote = "", name = "", role = ""] = line.split("|").map((part) => part.trim());
+    return { quote, name, role, avatar: null };
+  });
+const testimonials = structuredTestimonials.length > 0 ? structuredTestimonials : legacyTestimonials.length > 0 ? legacyTestimonials : defaultTestimonials.map((item) => ({ ...item, avatar: null }));
+---
+
+<section class="relative py-24 md:py-32">
+  <div class="container-content">
+    <div class="reveal text-center max-w-2xl mx-auto mb-16 md:mb-20">
+      <h2
+        class="text-[1.8rem] md:text-[2.4rem] font-bold leading-[1.05] text-strong"
+        style="letter-spacing: -0.04em;"
+      >
+        {heading}
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-5xl mx-auto">
+      {
+        testimonials.map((t, i) => (
+          <article
+            class={`reveal flex flex-col p-8 md:p-10 ${
+              i < testimonials.length - 1
+                ? "md:border-r border-b md:border-b-0 border-line-soft"
+                : ""
+            }`}
+            data-delay={Math.min(i + 1, 4)}
+          >
+            <span
+              class="text-[3.5rem] leading-none font-serif text-line select-none"
+              style="font-family: Georgia, serif;"
+              aria-hidden="true"
+            >&ldquo;</span>
+
+            <blockquote class="flex-1 mt-2 text-[0.95rem] leading-relaxed text-soft">
+              {t.quote}
+            </blockquote>
+
+            <div class="mt-8 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-strong flex items-center justify-center text-[12px] font-semibold text-white overflow-hidden">
+                {imageUrl(t.avatar) ? (
+                  <img src={imageUrl(t.avatar)} alt={imageAlt(t.avatar)} class="h-full w-full object-cover" loading="lazy" decoding="async" />
+                ) : (
+                  initialsFromName(t.name)
+                )}
+              </div>
+              <div>
+                <div class="text-[14px] font-semibold text-strong">{t.name}</div>
+                <div class="text-[12px] text-muted">{t.role}</div>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

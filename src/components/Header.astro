@@ -1,0 +1,168 @@
+---
+import Icon from "~/components/Icon.astro";
+import { siteConfig } from "~/config/site";
+
+type NavItem = {
+  label: string;
+  url: string;
+};
+
+interface Props {
+  ctaLabel?: string;
+  ctaUrl?: string;
+  ctaEnabled?: boolean;
+  links?: NavItem[];
+  logoText?: string;
+  logoImage?: string;
+  logoSize?: number;
+  logoTextSize?: number;
+  signInEnabled?: boolean;
+  signInLabel?: string;
+  signInUrl?: string;
+}
+
+const {
+  ctaEnabled = true,
+  ctaLabel = siteConfig.navigation.cta.label,
+  ctaUrl = siteConfig.navigation.cta.url,
+  links = siteConfig.navigation.links,
+  logoText = siteConfig.name,
+  logoImage = siteConfig.logo,
+  logoSize = 28,
+  logoTextSize = 15,
+  signInEnabled = false,
+  signInLabel = "Sign in",
+  signInUrl = "/contact/",
+} = Astro.props;
+---
+
+<header
+  class="sticky top-0 z-40 backdrop-blur-md backdrop-saturate-150 border-b border-line-soft"
+  style="background: oklch(99.5% 0.002 300 / 0.88);"
+>
+  <div class="container-wide flex items-center justify-between h-[68px]">
+    <!-- Logo -->
+    <a href="/" class="inline-flex items-center gap-2.5 group" aria-label={`${siteConfig.name} home`}>
+      {logoImage ? (
+        <img
+          src={logoImage}
+          alt=""
+          class="rounded-md object-contain"
+          style={`width: ${logoSize}px; height: ${logoSize}px;`}
+          loading="eager"
+          decoding="async"
+        />
+      ) : (
+        <span
+          class="inline-flex items-center justify-center rounded-full aurora-gradient-bg"
+          style={`width: ${logoSize}px; height: ${logoSize}px;`}
+          aria-hidden="true"
+        >
+          <span class="block w-2.5 h-2.5 rounded-full bg-white/90"></span>
+        </span>
+      )}
+      {logoText && (
+        <span class="font-bold tracking-[-0.03em] text-strong" style={`font-size: ${logoTextSize}px;`}>
+          {logoText}
+        </span>
+      )}
+    </a>
+
+    <!-- Center nav -->
+    <nav aria-label="Primary" class="hidden md:flex items-center gap-1">
+      {
+        links.map((link) => (
+          <a
+            href={link.url}
+            class="px-3.5 py-2 text-[14px] text-soft hover:text-strong transition-colors duration-200 rounded-lg"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- Right side -->
+    <div class="flex items-center gap-3">
+      {signInEnabled && (
+        <a
+          href={signInUrl}
+          class="hidden md:inline-flex text-[14px] text-soft hover:text-strong px-3 py-2 transition-colors duration-200"
+        >
+          {signInLabel}
+        </a>
+      )}
+      {ctaEnabled && (
+        <a
+          href={ctaUrl}
+          class="btn btn-brand group"
+          style="padding: 0.6rem 1.1rem; border-radius: 8px;"
+        >
+          <span>{ctaLabel}</span>
+          <Icon
+            name="arrow-right"
+            size={14}
+            class="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0.5"
+          />
+        </a>
+      )}
+      <button
+        id="aurora-menu-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="aurora-mobile-nav"
+        class="md:hidden p-2 -mr-2 text-strong rounded-lg hover:bg-surface"
+      >
+        <Icon name="menu" size={20} />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile nav -->
+  <div
+    id="aurora-mobile-nav"
+    class="md:hidden hidden border-t border-line-soft bg-bg"
+  >
+    <nav aria-label="Primary mobile" class="container-content flex flex-col py-3">
+      {
+        links.map((link) => (
+          <a
+            href={link.url}
+            class="px-2 py-3 text-[15px] text-strong border-b border-line-soft last:border-b-0"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      {signInEnabled && (
+        <a href={signInUrl} class="px-2 py-3 text-[15px] text-soft border-b border-line-soft">
+          {signInLabel}
+        </a>
+      )}
+      {ctaEnabled && (
+        <div class="pt-3">
+          <a
+            href={ctaUrl}
+            class="btn btn-brand w-full justify-center"
+            style="border-radius: 8px;"
+          >
+            {ctaLabel}
+          </a>
+        </div>
+      )}
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const toggle = document.getElementById("aurora-menu-toggle");
+    const menu = document.getElementById("aurora-mobile-nav");
+    toggle?.addEventListener("click", () => {
+      const open = menu?.classList.toggle("hidden") === false;
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    });
+  })();
+</script>

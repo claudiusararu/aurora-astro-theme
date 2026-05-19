@@ -1,0 +1,138 @@
+---
+import { siteConfig } from "~/config/site";
+
+interface FooterLink {
+  label: string;
+  url: string;
+}
+
+interface Props {
+  tagline?: string;
+  columnOneHtml?: string;
+  columnTwoHtml?: string;
+  columnThreeHtml?: string;
+  bottomLinks?: FooterLink[];
+  copyright?: string;
+  logoText?: string;
+  logoImage?: string;
+}
+
+const defaultColumnOne =
+  '<h2>NAVIGATION</h2><p><a href="/features/">Features</a></p><p><a href="/pricing/">Pricing</a></p><p><a href="/resources/">Resources</a></p><p><a href="/customers/">Customers</a></p><p><a href="/contact/">Contact</a></p>';
+const defaultColumnTwo =
+  '<h2>BLOG</h2><p><a href="/blog/">Product Updates</a></p><p><a href="/blog/">Engineering</a></p><p><a href="/blog/">Design</a></p><p><a href="/blog/">Company News</a></p><p><a href="/resources/">Guides</a></p>';
+const defaultColumnThree =
+  '<h2>RESOURCES</h2><p><a href="/resources/">Documentation</a></p><p><a href="/sections/">All Sections</a></p><p><a href="/resources/">API Reference</a></p><p><a href="/customers/">Community</a></p><p><a href="/resources/">Status</a></p><p><a href="/contact/">Support</a></p>';
+
+const {
+  tagline = "The modern platform for teams that ship. Organize, collaborate, and deliver with clarity.",
+  columnOneHtml = defaultColumnOne,
+  columnTwoHtml = defaultColumnTwo,
+  columnThreeHtml = defaultColumnThree,
+  bottomLinks = [
+    { label: "Privacy", url: "/privacy/" },
+    { label: "Terms", url: "/terms/" },
+    { label: "Cookies", url: "/privacy/" },
+  ],
+  copyright = "(c) 2026 Aurora, Inc.",
+  logoText = siteConfig.name,
+  logoImage = siteConfig.logo,
+} = Astro.props;
+
+const socials = siteConfig.social;
+const socialLinks = [
+  { key: "x", href: socials.twitter, label: "Aurora on X" },
+  { key: "github", href: socials.github, label: "Aurora on GitHub" },
+  { key: "linkedin", href: socials.linkedin, label: "Aurora on LinkedIn" },
+].filter((item) => item.href);
+---
+
+<footer class="border-t border-line-soft bg-bg pb-10 pt-16">
+  <div class="container-content">
+    <div class="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-12">
+      <div class="col-span-2 md:col-span-4 lg:col-span-5">
+        <a href="/" class="group inline-flex items-center gap-2.5" aria-label={`${siteConfig.name} home`}>
+          {logoImage ? (
+            <img
+              src={logoImage}
+              alt=""
+              class="h-7 w-7 rounded-md object-contain"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <span
+              class="aurora-gradient-bg inline-flex h-7 w-7 items-center justify-center rounded-full"
+              aria-hidden="true"
+            >
+              <span class="block h-2.5 w-2.5 rounded-full bg-white/90"></span>
+            </span>
+          )}
+          {logoText && (
+            <span class="text-[15px] font-bold tracking-[-0.03em] text-strong">{logoText}</span>
+          )}
+        </a>
+        {tagline && (
+          <p class="mt-4 max-w-[32ch] text-[14px] leading-relaxed text-soft">
+            {tagline}
+          </p>
+        )}
+
+        <div class="mt-6 flex items-center gap-2.5">
+          {
+            socialLinks.map((item) => (
+              <a href={item.href} aria-label={item.label} class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-surface text-soft transition-colors duration-200 hover:text-strong">
+                {item.key === "x" && <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m4 4 7.4 9.5L4.5 20H7l5.6-5.7L17 20h3l-7.7-9.9L18.7 4H16l-5 5L7 4Z"/></svg>}
+                {item.key === "github" && <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 3 .8.1-.7.4-1.1.6-1.4-2.2-.3-4.5-1.1-4.5-5 0-1.1.4-2 1-2.6-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.8 1 .8-.2 1.7-.3 2.5-.3.9 0 1.7.1 2.5.3 1.9-1.3 2.8-1 2.8-1 .6 1.4.2 2.5.1 2.8.6.7 1 1.6 1 2.6 0 3.9-2.3 4.7-4.5 5 .4.3.7.9.7 1.8v2.7c0 .3.2.6.7.5 4-1.3 6.8-5.1 6.8-9.5 0-5.5-4.5-10-10-10Z"/></svg>}
+                {item.key === "linkedin" && <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2ZM8 19H5v-9h3v9ZM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5 1.78 1.78 0 0 1 6.5 8.25ZM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66V19Z"/></svg>}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="footer-rich col-span-1 md:col-span-2 lg:col-span-2" set:html={columnOneHtml} />
+      <div class="footer-rich col-span-1 md:col-span-2 lg:col-span-2" set:html={columnTwoHtml} />
+      <div class="footer-rich col-span-1 md:col-span-2 lg:col-span-2" set:html={columnThreeHtml} />
+    </div>
+
+    <div class="mt-14 flex flex-col justify-between gap-4 border-t border-line-soft pt-7 text-[12px] text-muted md:flex-row">
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <span>{copyright}</span>
+        {
+          bottomLinks.slice(0, 3).map((item) => (
+            <a href={item.url || "/"} class="transition-colors duration-200 hover:text-strong">
+              {item.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style is:global>
+  .footer-rich h2 {
+    margin-bottom: 1rem;
+    color: var(--color-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .footer-rich p {
+    margin-bottom: 0.625rem;
+    color: var(--color-soft);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .footer-rich a {
+    color: var(--color-soft);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .footer-rich a:hover {
+    color: var(--color-strong);
+  }
+</style>

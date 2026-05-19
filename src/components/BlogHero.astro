@@ -1,0 +1,90 @@
+---
+interface Props {
+  title?: string;
+  category?: string;
+  date?: string;
+  author?: string;
+  authorInitials?: string;
+  slug?: string;
+  image?: string;
+  imageAlt?: string;
+}
+
+const {
+  title = "Design Team Rituals That Actually Work (Even Remotely)",
+  category = "Design",
+  date = "May 6, 2026",
+  author = "Sarah Rodriguez",
+  authorInitials = "SR",
+  slug = "getting-started",
+  image = "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=900&auto=format&fit=crop&q=85",
+  imageAlt = "",
+} = Astro.props;
+---
+
+<section class="py-12 md:py-16">
+  <div class="container-content">
+    <div class="reveal">
+      <a
+        href={`/blog/${slug}/`}
+        class="group block relative rounded-2xl overflow-hidden"
+        style="height: clamp(320px, 40vw, 420px);"
+        aria-label={`Read: ${title}`}
+      >
+        <img
+          src={image}
+          alt={imageAlt || title}
+          class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+          loading="eager"
+          decoding="async"
+        />
+
+        <!-- Dark gradient overlay for text readability -->
+        <div
+          class="absolute inset-0"
+          style="background: linear-gradient(
+            to top,
+            oklch(10% 0.005 260 / 0.85) 0%,
+            oklch(10% 0.005 260 / 0.4) 50%,
+            oklch(10% 0.005 260 / 0.15) 100%
+          );"
+          aria-hidden="true"
+        ></div>
+
+        <!-- Content overlay -->
+        <div class="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
+          <!-- Category badge -->
+          <span
+            class="inline-flex self-start items-center px-3 py-1 rounded-full text-[12px] font-medium mb-5"
+            style="background: oklch(99% 0 0 / 0.15); color: oklch(95% 0.005 300); backdrop-filter: blur(4px);"
+          >
+            {category}
+          </span>
+
+          <!-- Heading -->
+          <h2
+            class="text-[1.6rem] md:text-[2.2rem] lg:text-[2.6rem] font-bold leading-[1.1] max-w-[22ch]"
+            style="color: oklch(97% 0.003 300); letter-spacing: -0.035em;"
+          >
+            {title}
+          </h2>
+
+          <!-- Author info -->
+          <div class="flex items-center gap-3 mt-6">
+            <div
+              class="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-bold"
+              style="background: oklch(60% 0.04 260); color: oklch(95% 0.005 300);"
+              aria-hidden="true"
+            >
+              {authorInitials}
+            </div>
+            <div>
+              <div class="text-[13px] font-medium" style="color: oklch(92% 0.005 300);">{author}</div>
+              <div class="text-[12px]" style="color: oklch(65% 0.01 300);">{date}</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>

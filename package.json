@@ -1,0 +1,28 @@
+{
+  "name": "aurora-theme",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aurora — Elegant SaaS theme with aurora gradient accents. Built with Astro 6 + Tailwind v4.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy:vercel": "npx vercel --prod",
+    "deploy:netlify": "npm run build && npx netlify deploy --prod --dir=dist",
+    "deploy:cloudflare": "npm run build && npx wrangler pages deploy dist"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.2",
+    "@fontsource-variable/dm-sans": "^5.2.8",
+    "@fontsource-variable/geist": "^5.2.8",
+    "@fontsource-variable/geist-mono": "^5.2.7",
+    "@splidejs/splide": "^4.1.4",
+    "astro": "^5.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0"
+  }
+}

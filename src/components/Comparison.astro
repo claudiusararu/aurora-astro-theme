@@ -1,0 +1,137 @@
+---
+import Icon from "~/components/Icon.astro";
+
+interface ComparisonRow {
+  feature: string;
+  starter: string;
+  pro: string;
+  enterprise: string;
+}
+
+const defaultRows: ComparisonRow[] = [
+  { feature: "Projects", starter: "5", pro: "Unlimited", enterprise: "Unlimited" },
+  { feature: "Team members", starter: "3", pro: "Unlimited", enterprise: "Unlimited" },
+  { feature: "Storage", starter: "1 GB", pro: "50 GB", enterprise: "Unlimited" },
+  { feature: "Analytics", starter: "-", pro: "✓", enterprise: "✓" },
+  { feature: "Custom workflows", starter: "-", pro: "✓", enterprise: "✓" },
+  { feature: "API access", starter: "-", pro: "✓", enterprise: "✓" },
+  { feature: "SSO / SAML", starter: "-", pro: "-", enterprise: "✓" },
+  { feature: "Dedicated support", starter: "-", pro: "-", enterprise: "✓" },
+];
+
+const {
+  heading = "Compare plans",
+  subheading = "Find the right fit for your team. Every plan includes a 14-day free trial.",
+  starterLabel = "Starter",
+  proLabel = "Pro",
+  enterpriseLabel = "Enterprise",
+  comparisonRows = defaultRows,
+  buttonLabel = "Start free trial",
+  buttonUrl = "#start",
+  secondaryButtonLabel = "Talk to sales",
+  secondaryButtonUrl = "#contact",
+} = Astro.props as {
+  heading?: string;
+  subheading?: string;
+  starterLabel?: string;
+  proLabel?: string;
+  enterpriseLabel?: string;
+  comparisonRows?: ComparisonRow[];
+  buttonLabel?: string;
+  buttonUrl?: string;
+  secondaryButtonLabel?: string;
+  secondaryButtonUrl?: string;
+};
+
+const plans = [starterLabel, proLabel, enterpriseLabel];
+const rows = comparisonRows.length ? comparisonRows : defaultRows;
+
+function isCheck(value: string) {
+  return ["true", "yes", "included", "✓", "check"].includes(value.trim().toLowerCase());
+}
+
+function isDash(value: string) {
+  return ["false", "no", "-", "—", ""].includes(value.trim().toLowerCase());
+}
+---
+
+<section class="relative py-20 md:py-28">
+  <div class="container-content">
+    <div class="reveal text-center max-w-2xl mx-auto mb-14 md:mb-18">
+      <h2
+        class="text-[1.8rem] md:text-[2.4rem] font-bold leading-[1.05] text-strong"
+        style="letter-spacing: -0.04em;"
+      >
+        {heading}
+      </h2>
+      <p class="mt-5 text-[1.05rem] text-soft max-w-[44ch] mx-auto">
+        {subheading}
+      </p>
+    </div>
+
+    <div class="reveal overflow-x-auto" data-delay="1">
+      <table class="w-full min-w-[600px] border-collapse">
+        <!-- Header -->
+        <thead>
+          <tr>
+            <th class="text-left py-4 px-5 text-[13px] font-medium text-muted w-[35%]">
+              Feature
+            </th>
+            {
+              plans.map((plan) => (
+                <th
+                  class="py-4 px-5 text-center bg-strong text-white text-[14px] font-semibold first-of-type:rounded-tl-lg last-of-type:rounded-tr-lg"
+                >
+                  {plan}
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+
+        <tbody>
+          {
+            rows.map((row, i) => (
+              <tr
+                class={`border-b border-line-soft ${i === 0 ? "border-t" : ""}`}
+              >
+                <td class="py-3.5 px-5 text-[14px] font-medium text-strong">
+                  {row.feature}
+                </td>
+                {[row.starter, row.pro, row.enterprise].map((val) => (
+                  <td class="py-3.5 px-5 text-center">
+                    {isCheck(val) ? (
+                      <Icon name="check" size={16} class="inline-block text-strong" stroke={2} />
+                    ) : isDash(val) ? (
+                      <span class="inline-block w-4 h-px bg-line" aria-label="Not included"></span>
+                    ) : (
+                      <span class="text-[14px] text-soft">{val}</span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CTA row -->
+    <div class="reveal mt-8 flex flex-col sm:flex-row items-center justify-center gap-3" data-delay="2">
+      <a
+        href={buttonUrl}
+        class="btn btn-brand btn-lg"
+        style="border-radius: 8px;"
+      >
+        {buttonLabel}
+      </a>
+      <a
+        href={secondaryButtonUrl}
+        class="btn btn-ghost btn-lg"
+        style="border-radius: 8px;"
+      >
+        {secondaryButtonLabel}
+      </a>
+    </div>
+  </div>
+</section>

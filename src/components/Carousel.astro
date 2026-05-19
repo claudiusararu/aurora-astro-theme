@@ -1,0 +1,379 @@
+---
+import "@splidejs/splide/css/core";
+
+type LayoutType = "two-up" | "single-focus" | "three-up-compact";
+type ImageRatio = "16:9" | "4:3" | "1:1" | "portrait";
+type ImageAsset = string | { url?: string; alt?: string; originalName?: string } | null | undefined;
+type SlideItem = {
+  image?: ImageAsset;
+  src?: string;
+  title?: string;
+  description?: string;
+  alt?: string;
+};
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  subheading?: string;
+  layout?: LayoutType;
+  imageRatio?: ImageRatio;
+  autoplay?: boolean;
+  interval?: number;
+  loop?: boolean;
+  showArrows?: boolean;
+  showDots?: boolean;
+  slideItems?: SlideItem[];
+  slides?: string;
+}
+
+const defaultSlides = [
+  {
+    image: {
+      url: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=800&auto=format&fit=crop&q=85",
+      alt: "Team planning workspace",
+    },
+    title: "Planning workspace",
+    description: "A calm overview for launches, campaigns, and ongoing product work.",
+    alt: "Team planning workspace",
+  },
+  {
+    image: {
+      url: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200&h=800&auto=format&fit=crop&q=85",
+      alt: "Modern collaborative office",
+    },
+    title: "Modern team room",
+    description: "Bring product, design, and operations into one shared space.",
+    alt: "Modern collaborative office",
+  },
+  {
+    image: {
+      url: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&h=800&auto=format&fit=crop&q=85",
+      alt: "People collaborating around laptops",
+    },
+    title: "Live collaboration",
+    description: "Keep context, ownership, and decisions visible as work moves.",
+    alt: "People collaborating around laptops",
+  },
+  {
+    image: {
+      url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=800&auto=format&fit=crop&q=85",
+      alt: "Laptop showing analytics work",
+    },
+    title: "Analytics dashboard",
+    description: "Track progress with a visual system your team can understand quickly.",
+    alt: "Laptop showing analytics work",
+  },
+];
+
+const {
+  eyebrow = "Carousel",
+  heading = "A closer look at Aurora",
+  subheading = "Showcase product screens, customer stories, launches, offices, or any image-led moment.",
+  layout = "two-up",
+  imageRatio = "16:9",
+  autoplay = false,
+  interval = 4200,
+  loop = true,
+  showArrows = true,
+  showDots = true,
+  slideItems = [],
+  slides = "",
+} = Astro.props;
+
+function imageUrl(value: ImageAsset) {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  return value.url ?? "";
+}
+
+const structuredSlides = slideItems
+  .map((slide) => {
+    const url = imageUrl(slide.image) || slide.src || "";
+    return {
+      image: url,
+      title: slide.title ?? "",
+      description: slide.description ?? "",
+      alt: slide.alt || (typeof slide.image === "object" && slide.image?.alt) || slide.title || "Carousel image",
+    };
+  })
+  .filter((slide) => slide.image || slide.title || slide.description);
+
+const legacySlides = slides
+  .split("\n")
+  .map((line) => line.trim())
+  .filter(Boolean)
+  .map((line) => {
+    const [image = "", title = "", description = "", alt = ""] = line.split("|").map((part) => part.trim());
+    return {
+      image,
+      title,
+      description,
+      alt: alt || title || "Carousel image",
+    };
+  })
+  .filter((slide) => slide.image || slide.title || slide.description);
+
+const carouselSlides = structuredSlides.length > 0 ? structuredSlides : legacySlides.length > 0 ? legacySlides : defaultSlides.map((slide) => ({
+  image: imageUrl(slide.image),
+  title: slide.title,
+  description: slide.description,
+  alt: slide.alt,
+}));
+
+const perPage = layout === "single-focus" ? 1 : layout === "three-up-compact" ? 3 : 2;
+const gap = layout === "three-up-compact" ? "1.25rem" : "2rem";
+const ratioClass = imageRatio === "4:3" ? "ratio-4-3" : imageRatio === "1:1" ? "ratio-square" : imageRatio === "portrait" ? "ratio-portrait" : "ratio-16-9";
+---
+
+<section class="relative overflow-hidden bg-bg py-20 md:py-28">
+  <div class="container-content">
+    <div class="reveal mb-10 max-w-2xl md:mb-14">
+      {eyebrow.trim() && (
+        <p class="mb-4 font-mono text-[12px] uppercase tracking-[0.08em] text-muted">
+          {eyebrow}
+        </p>
+      )}
+      <h2
+        class="text-[1.8rem] font-bold leading-[1.05] text-strong md:text-[2.4rem]"
+        style="letter-spacing: -0.04em;"
+      >
+        {heading}
+      </h2>
+      {subheading.trim() && (
+        <p class="mt-4 max-w-[58ch] text-[1rem] leading-relaxed text-soft">
+          {subheading}
+        </p>
+      )}
+    </div>
+
+    <div
+      class:list={["splide aurora-image-carousel reveal", ratioClass]}
+      aria-label="Aurora image carousel"
+      data-aurora-image-carousel
+      data-per-page={perPage}
+      data-gap={gap}
+      data-autoplay={autoplay ? "true" : "false"}
+      data-interval={interval}
+      data-loop={loop ? "true" : "false"}
+      data-arrows={showArrows ? "true" : "false"}
+      data-pagination={showDots ? "true" : "false"}
+      data-delay="1"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          {
+            carouselSlides.map((slide) => (
+              <li class="splide__slide">
+                <article class="aurora-image-carousel__card">
+                  <div class="aurora-image-carousel__media">
+                    {slide.image ? (
+                      <img src={slide.image} alt={slide.alt} loading="lazy" decoding="async" />
+                    ) : (
+                      <div class="aurora-image-carousel__empty" aria-hidden="true"></div>
+                    )}
+                  </div>
+                  <h3>{slide.title}</h3>
+                  <p>{slide.description}</p>
+                </article>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import Splide from "@splidejs/splide";
+
+  function mountAuroraImageCarousels() {
+    document.querySelectorAll("[data-aurora-image-carousel]").forEach((element) => {
+      if (!(element instanceof HTMLElement) || element.dataset.splideMounted === "true") return;
+
+      const perPage = Number(element.dataset.perPage || 2);
+      const gap = element.dataset.gap || "2rem";
+      const loop = element.dataset.loop !== "false";
+      const autoplay = element.dataset.autoplay === "true";
+
+      new Splide(element, {
+        type: loop ? "loop" : "slide",
+        rewind: !loop,
+        perPage,
+        perMove: 1,
+        gap,
+        arrows: element.dataset.arrows !== "false",
+        pagination: element.dataset.pagination !== "false",
+        autoplay,
+        interval: Number(element.dataset.interval || 4200),
+        pauseOnHover: true,
+        speed: 650,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        breakpoints: {
+          1023: {
+            perPage: Math.min(perPage, 2),
+          },
+          767: {
+            perPage: 1,
+            gap: "1rem",
+          },
+        },
+      }).mount();
+
+      element.dataset.splideMounted = "true";
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mountAuroraImageCarousels, { once: true });
+  } else {
+    mountAuroraImageCarousels();
+  }
+
+  document.addEventListener("astro:page-load", mountAuroraImageCarousels);
+</script>
+
+<style>
+  .aurora-image-carousel {
+    position: relative;
+    padding-inline: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .aurora-image-carousel__card {
+    min-width: 0;
+  }
+
+  .aurora-image-carousel__media {
+    overflow: hidden;
+    border: 1px solid var(--color-line-soft);
+    background: var(--color-elevated);
+  }
+
+  .aurora-image-carousel.ratio-16-9 .aurora-image-carousel__media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .aurora-image-carousel.ratio-4-3 .aurora-image-carousel__media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .aurora-image-carousel.ratio-square .aurora-image-carousel__media {
+    aspect-ratio: 1 / 1;
+  }
+
+  .aurora-image-carousel.ratio-portrait .aurora-image-carousel__media {
+    aspect-ratio: 4 / 5;
+  }
+
+  .aurora-image-carousel__media img,
+  .aurora-image-carousel__empty {
+    width: 100%;
+    height: 100%;
+  }
+
+  .aurora-image-carousel__media img {
+    object-fit: cover;
+    transition: transform 0.7s var(--ease-out-quint);
+  }
+
+  .aurora-image-carousel__empty {
+    display: block;
+    background: linear-gradient(135deg, oklch(95% 0.05 330), oklch(94% 0.06 220), oklch(94% 0.05 75));
+  }
+
+  .aurora-image-carousel__card:hover .aurora-image-carousel__media img {
+    transform: scale(1.035);
+  }
+
+  .aurora-image-carousel__card h3 {
+    margin-top: 1.25rem;
+    color: var(--color-strong);
+    font-size: clamp(1.05rem, 2vw, 1.18rem);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  .aurora-image-carousel__card p {
+    margin-top: 0.5rem;
+    max-width: 38rem;
+    color: var(--color-soft);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .aurora-image-carousel :global(.splide__arrow) {
+    position: absolute;
+    top: 36%;
+    z-index: 2;
+    display: flex;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: color 0.18s var(--ease-out-quart), transform 0.18s var(--ease-out-quart);
+  }
+
+  .aurora-image-carousel :global(.splide__arrow:hover) {
+    color: var(--color-strong);
+    transform: translateY(-1px);
+  }
+
+  .aurora-image-carousel :global(.splide__arrow--prev) {
+    left: -0.5rem;
+  }
+
+  .aurora-image-carousel :global(.splide__arrow--prev svg) {
+    transform: scaleX(-1);
+  }
+
+  .aurora-image-carousel :global(.splide__arrow--next) {
+    right: -0.5rem;
+  }
+
+  .aurora-image-carousel :global(.splide__arrow svg) {
+    width: 2.6rem;
+    height: 2.6rem;
+    fill: currentColor;
+  }
+
+  .aurora-image-carousel :global(.splide__pagination) {
+    display: flex;
+    justify-content: center;
+    gap: 0.45rem;
+    margin-top: 2.25rem;
+  }
+
+  .aurora-image-carousel :global(.splide__pagination__page) {
+    width: 0.62rem;
+    height: 0.62rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-line);
+    cursor: pointer;
+    transition: background 0.18s var(--ease-out-quart), transform 0.18s var(--ease-out-quart);
+  }
+
+  .aurora-image-carousel :global(.splide__pagination__page.is-active) {
+    background: var(--color-strong);
+    transform: scale(1.08);
+  }
+
+  @media (max-width: 767px) {
+    .aurora-image-carousel {
+      padding-inline: 0;
+    }
+
+    .aurora-image-carousel :global(.splide__arrow--prev) {
+      left: -1rem;
+    }
+
+    .aurora-image-carousel :global(.splide__arrow--next) {
+      right: -1rem;
+    }
+  }
+</style>

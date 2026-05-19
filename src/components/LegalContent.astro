@@ -1,0 +1,119 @@
+---
+interface Props {
+  heading?: string;
+  updated?: string;
+  intro?: string;
+  contentHtml?: string;
+}
+
+const {
+  heading = "Privacy Policy",
+  updated = "Last updated: April 1, 2026",
+  intro = "This starter legal page is written as clear, editable placeholder copy. Replace it with the policy language that matches your product, jurisdiction, and data practices before publishing.",
+  contentHtml = "",
+} = Astro.props;
+
+const defaultPrivacyHtml = `
+  <h2>Information we collect</h2>
+  <p>We collect the information you provide when you create an account, contact us, subscribe to updates, or use the product. This may include your name, email address, workspace details, and product usage activity.</p>
+  <h2>How we use information</h2>
+  <p>We use information to provide the service, improve product quality, respond to support requests, protect accounts, and send important product or account updates.</p>
+  <h2>Cookies and analytics</h2>
+  <p>We may use cookies and privacy-conscious analytics to understand how visitors use the website and to keep the product secure. You can adjust cookie preferences through your browser settings.</p>
+  <h2>Data sharing</h2>
+  <p>We do not sell personal information. We only share information with service providers that help us operate the product, comply with legal obligations, or protect the rights and safety of our users.</p>
+  <h2>Your choices</h2>
+  <p>You can request access, correction, export, or deletion of your personal information by contacting our team. Some information may be retained where required for security, legal, or accounting purposes.</p>
+`;
+
+const defaultTermsHtml = `
+  <h2>Use of the service</h2>
+  <p>You are responsible for the activity in your account and for using the product in a lawful, respectful, and secure manner.</p>
+  <h2>Accounts and access</h2>
+  <p>You must provide accurate account information and keep your login credentials safe. We may suspend access if we detect abuse, security risk, or violation of these terms.</p>
+  <h2>Content ownership</h2>
+  <p>You retain ownership of the content you add to the product. By using the service, you grant us the limited rights needed to host, process, and display that content for you.</p>
+  <h2>Availability</h2>
+  <p>We work to keep the service reliable, but we cannot guarantee uninterrupted availability. We may update, improve, or modify features over time.</p>
+  <h2>Contact</h2>
+  <p>If you have questions about these terms, contact the team using the details provided on the contact page.</p>
+`;
+
+const resolvedContentHtml = contentHtml || (heading.toLowerCase().includes("terms") ? defaultTermsHtml : defaultPrivacyHtml);
+---
+
+<section class="py-32 md:py-40">
+  <div class="container-content">
+    <div class="mx-auto max-w-3xl">
+      <div class="reveal mb-12">
+        <h1
+          class="text-[2rem] font-bold leading-[1.05] text-strong md:text-[2.6rem]"
+          style="letter-spacing: -0.04em;"
+        >
+          {heading}
+        </h1>
+        {updated && <p class="mt-4 text-[14px] text-muted">{updated}</p>}
+      </div>
+
+      <div class="reveal prose prose-aurora" data-delay="1">
+        {intro && <p>{intro}</p>}
+        <div set:html={resolvedContentHtml} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .prose-aurora {
+    color: var(--color-text);
+    line-height: 1.75;
+    font-size: 0.95rem;
+  }
+  .prose-aurora h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-strong);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+  .prose-aurora p {
+    margin-bottom: 1rem;
+    color: var(--color-soft);
+  }
+  .prose-aurora ul,
+  .prose-aurora ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+  .prose-aurora ul {
+    list-style-type: disc;
+  }
+  .prose-aurora ol {
+    list-style-type: decimal;
+  }
+  .prose-aurora li {
+    margin-bottom: 0.35rem;
+    color: var(--color-soft);
+  }
+  .prose-aurora blockquote {
+    margin: 1.75rem 0;
+    border-left: 3px solid var(--color-brand);
+    padding: 0.25rem 0 0.25rem 1rem;
+    color: var(--color-soft);
+    font-style: italic;
+    background: color-mix(in oklab, var(--color-surface) 78%, white);
+  }
+  .prose-aurora blockquote p {
+    margin-bottom: 0;
+  }
+  .prose-aurora a {
+    color: var(--color-strong);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s;
+  }
+  .prose-aurora a:hover {
+    opacity: 0.7;
+  }
+</style>

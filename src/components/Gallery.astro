@@ -1,0 +1,77 @@
+---
+interface GalleryItem {
+  label: string;
+  image?: { url: string; alt?: string } | null;
+  alt?: string;
+}
+
+const gradients = [
+  "linear-gradient(135deg, var(--aurora-pink), var(--aurora-lavender))",
+  "linear-gradient(135deg, var(--aurora-lavender), var(--aurora-blue))",
+  "linear-gradient(135deg, var(--aurora-blue), var(--aurora-peach))",
+  "linear-gradient(135deg, var(--aurora-peach), var(--aurora-pink))",
+  "linear-gradient(135deg, var(--aurora-pink), var(--aurora-blue))",
+  "linear-gradient(135deg, var(--aurora-lavender), var(--aurora-peach))",
+];
+
+const defaultItems: GalleryItem[] = [
+  { label: "Dashboard" },
+  { label: "Analytics" },
+  { label: "Projects" },
+  { label: "Timeline" },
+  { label: "Reports" },
+  { label: "Settings" },
+];
+
+const {
+  heading = "Built for every workflow",
+  subheading = "A glimpse into the interfaces your team will use every day.",
+  galleryItems = defaultItems,
+} = Astro.props as {
+  heading?: string;
+  subheading?: string;
+  galleryItems?: GalleryItem[];
+};
+
+const items = galleryItems.length ? galleryItems : defaultItems;
+---
+
+<section class="relative py-20 md:py-28">
+  <div class="container-content">
+    <div class="reveal mb-14 md:mb-18 max-w-2xl">
+      <h2
+        class="text-[1.8rem] md:text-[2.4rem] font-bold leading-[1.05] text-strong"
+        style="letter-spacing: -0.04em;"
+      >
+        {heading}
+      </h2>
+      <p class="mt-5 text-[1.05rem] text-soft max-w-[48ch]">
+        {subheading}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {
+        items.map((item, i) => (
+          <div
+            class="reveal overflow-hidden"
+            style="border-radius: 12px;"
+            data-delay={Math.min(i + 1, 6)}
+          >
+            <div
+              class="relative aspect-[4/3] flex items-end overflow-hidden p-5"
+              style={`background: ${item.image?.url ? "var(--color-surface)" : gradients[i % gradients.length]};`}
+            >
+              {item.image?.url ? (
+                <img src={item.image.url} alt={item.alt ?? item.image.alt ?? item.label} class="absolute inset-0 h-full w-full object-cover" />
+              ) : null}
+              <span class="relative rounded-full bg-white/80 px-3 py-1 text-[13px] font-semibold text-strong/70">
+                {item.label}
+              </span>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

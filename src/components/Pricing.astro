@@ -1,0 +1,230 @@
+---
+import Icon from "~/components/Icon.astro";
+
+type PricingFrequency = "month" | "year" | "onetime";
+type PricingItem = {
+  title?: string;
+  subtitle?: string;
+  price?: string;
+  frequency?: PricingFrequency;
+  ctaText?: string;
+  ctaUrl?: string;
+  benefits?: string[];
+  recommended?: boolean;
+};
+
+interface Props {
+  heading?: string;
+  subheading?: string;
+  plans?: string;
+  pricingItems?: PricingItem[];
+}
+
+const defaultPricingItems: Required<PricingItem>[] = [
+  {
+    title: "Individual Plan",
+    subtitle: "Best option for solo designers or freelancers",
+    price: "25",
+    frequency: "month",
+    ctaText: "Get Started",
+    ctaUrl: "#start",
+    benefits: [
+      "Up to 5 projects",
+      "10,000 events / month",
+      "Basic analytics",
+      "Email support",
+      "1 team member",
+      "30-day data retention",
+      "Standard integrations",
+      "Community access",
+    ],
+    recommended: false,
+  },
+  {
+    title: "Power Users & Teams",
+    subtitle: "Best option for team agencies or corporates",
+    price: "59",
+    frequency: "month",
+    ctaText: "Get Started",
+    ctaUrl: "#start",
+    benefits: [
+      "Unlimited projects",
+      "Unlimited events",
+      "Advanced analytics & reports",
+      "Priority support (4h SLA)",
+      "Unlimited team members",
+      "1-year data retention",
+      "Custom integrations & API",
+      "SSO & advanced security",
+    ],
+    recommended: true,
+  },
+];
+
+const {
+  heading = "Power your progress with Pro Access",
+  subheading = "Choose the plan that works for your workflow. Scale up or down anytime.",
+  plans = "",
+  pricingItems,
+} = Astro.props;
+
+function defaultBenefits(title: string): string[] {
+  if (title === "Power Users & Teams") {
+    return defaultPricingItems[1].benefits;
+  }
+  return defaultPricingItems[0].benefits;
+}
+
+function normalizeFrequency(value: unknown): PricingFrequency {
+  return value === "year" || value === "onetime" ? value : "month";
+}
+
+function normalizePlan(plan: PricingItem): Required<PricingItem> {
+  const title = plan.title ?? "";
+  return {
+    title,
+    subtitle: plan.subtitle ?? "",
+    price: plan.price ?? "",
+    frequency: normalizeFrequency(plan.frequency),
+    ctaText: plan.ctaText ?? "Get Started",
+    ctaUrl: plan.ctaUrl ?? "#start",
+    benefits: Array.isArray(plan.benefits) && plan.benefits.length > 0 ? plan.benefits : defaultBenefits(title),
+    recommended: plan.recommended === true,
+  };
+}
+
+function parsePlanLine(line: string): Required<PricingItem> {
+  if (line.includes("|")) {
+    const [title = "", subtitle = "", price = "", highlight = ""] = line.split("|").map((part) => part.trim());
+    return normalizePlan({
+      title,
+      subtitle,
+      price,
+      frequency: "month",
+      recommended: highlight === "recommended",
+    });
+  }
+
+  const [title = "", price = ""] = line.split(" - ").map((part) => part.trim());
+  return normalizePlan({
+    title,
+    price: price.replace(/^\$/, "").replace(/\/mo$/, ""),
+    frequency: price.includes("/yr") || price.includes("/year") ? "year" : price.includes("/mo") || price.includes("/month") ? "month" : "onetime",
+  });
+}
+
+function normalizeRecommended(items: Required<PricingItem>[]): Required<PricingItem>[] {
+  let recommendedSeen = false;
+  return items.map((item) => {
+    const recommended = item.recommended && !recommendedSeen;
+    if (recommended) recommendedSeen = true;
+    return { ...item, recommended };
+  });
+}
+
+function formatPrice(price: string): string {
+  const value = price.trim();
+  if (!value) return "$0";
+  return value.startsWith("$") ? value : `$${value}`;
+}
+
+function frequencyLabel(frequency: PricingFrequency): string {
+  if (frequency === "month") return "/ month";
+  if (frequency === "year") return "/ year";
+  return "one-time";
+}
+
+const structuredPlans = Array.isArray(pricingItems)
+  ? pricingItems.map(normalizePlan).filter((plan) => plan.title || plan.price)
+  : [];
+const legacyPlans = plans
+  .split("\n")
+  .map((line) => line.trim())
+  .filter(Boolean)
+  .map(parsePlanLine);
+const renderedPlans = normalizeRecommended(
+  structuredPlans.length > 0 ? structuredPlans : legacyPlans.length > 0 ? legacyPlans : defaultPricingItems,
+);
+---
+
+<section id="pricing" class="relative py-24 md:py-32">
+  <div class="container-content">
+    <div class="reveal text-center max-w-2xl mx-auto mb-14 md:mb-18">
+      <h2
+        class="text-[1.8rem] md:text-[2.4rem] font-bold leading-[1.05] text-strong"
+        style="letter-spacing: -0.04em;"
+      >
+        {heading}
+      </h2>
+      <p class="mt-5 text-[1.05rem] text-soft max-w-[48ch] mx-auto">
+        {subheading}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      {
+        renderedPlans.map((plan, i) => (
+          <article
+            class={`reveal relative flex flex-col bg-bg p-8 md:p-10 border transition-colors duration-200 ${
+              plan.recommended
+                ? "border-strong"
+                : "border-line-soft"
+            }`}
+            style="border-radius: 12px;"
+            data-delay={Math.min(i + 1, 4)}
+          >
+            {plan.recommended && (
+              <div
+                class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-strong text-white text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap"
+              >
+                Recommended
+              </div>
+            )}
+
+            <h3 class="text-[1.15rem] font-bold tracking-[-0.02em] text-strong mt-1">
+              {plan.title}
+            </h3>
+
+            <p class="mt-2 text-[0.9rem] text-soft">
+              {plan.subtitle}
+            </p>
+
+            <div class="mt-6 flex items-baseline gap-1">
+              <span
+                class="text-[3rem] font-bold text-strong text-tabular leading-none"
+                style="letter-spacing: -0.04em;"
+              >
+                {formatPrice(plan.price)}
+              </span>
+              <span class="text-[14px] text-muted">{frequencyLabel(plan.frequency)}</span>
+            </div>
+
+            <a
+              href={plan.ctaUrl}
+              class="btn btn-brand btn-lg w-full justify-center mt-8"
+              style="border-radius: 8px;"
+            >
+              {plan.ctaText}
+            </a>
+
+            <ul class="mt-8 pt-7 border-t border-line-soft space-y-3.5">
+              {
+                plan.benefits.map((feature) => (
+                  <li class="flex items-start gap-2.5 text-[14px] text-soft">
+                    <Icon
+                      name="check"
+                      size={16}
+                      class="shrink-0 mt-0.5 text-strong"
+                      stroke={2}
+                    />
+                    <span>{feature}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

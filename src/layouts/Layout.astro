@@ -1,0 +1,200 @@
+---
+import "~/styles/global.css";
+import { siteConfig } from "~/config/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = siteConfig.seo.title,
+  description = siteConfig.seo.description,
+  ogImage = siteConfig.seo.ogImage,
+  canonical = Astro.url.pathname,
+  noindex = false,
+} = Astro.props;
+
+const siteUrl = siteConfig.url;
+const canonicalURL = new URL(canonical, siteUrl ? new URL(siteUrl) : Astro.site ?? Astro.url);
+const ogImageURL = new URL(ogImage, siteUrl ? new URL(siteUrl) : Astro.site ?? Astro.url).toString();
+const robots = noindex
+  ? "noindex, nofollow"
+  : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+
+// Analytics script generation
+function getAnalyticsScript() {
+  const { provider } = siteConfig.analytics;
+  if (!provider) return "";
+  const a = siteConfig.analytics as Record<string, unknown>;
+
+  if (provider === "google" && a.googleId) {
+    return `<script async src="https://www.googletagmanager.com/gtag/js?id=${a.googleId}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${a.googleId}');</script>`;
+  }
+
+  if (provider === "plausible" && a.plausibleDomain) {
+    return `<script defer data-domain="${a.plausibleDomain}" src="https://plausible.io/js/script.js"></script>`;
+  }
+
+  if (provider === "umami" && a.umamiWebsiteId) {
+    const src = (a.umamiScriptUrl as string) || "https://cloud.umami.is/script.js";
+    return `<script defer src="${src}" data-website-id="${a.umamiWebsiteId}"></script>`;
+  }
+
+  return "";
+}
+
+const analyticsScript = getAnalyticsScript();
+const siteName = siteConfig.name;
+const favicon = siteConfig.favicon;
+const twitterHandle = siteConfig.seo.twitterHandle;
+const customHead = [analyticsScript, siteConfig.headScripts].filter(Boolean).join("\n");
+const customCss = "";
+const primaryColor = "oklch(58% 0.234 263)";
+const ctaGlowColor = "oklch(58% 0.234 263 / 0.35)";
+const ctaRadius = "8px";
+const primaryFont = "\"DM Sans Variable\", \"DM Sans\", ui-sans-serif, system-ui, -apple-system, sans-serif";
+const secondaryFont = primaryFont;
+const brandCss = `
+  :root {
+    ${primaryColor ? `--color-brand: ${primaryColor};` : ""}
+    ${primaryColor ? `--color-brand-hover: color-mix(in oklab, ${primaryColor} 86%, white);` : ""}
+    ${primaryColor ? `--color-brand-active: color-mix(in oklab, ${primaryColor} 76%, white);` : ""}
+    --font-sans: ${primaryFont};
+    --font-display: ${secondaryFont};
+  }
+  .btn-brand {
+    border-radius: ${ctaRadius} !important;
+    box-shadow: 0 1px 0 0 color-mix(in oklab, ${ctaGlowColor} 60%, white) inset, 0 -1px 0 0 color-mix(in oklab, ${ctaGlowColor} 55%, black) inset, 0 6px 18px -4px ${ctaGlowColor}, 0 12px 36px -8px ${ctaGlowColor} !important;
+  }
+`;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#1a1a1f" />
+    <meta name="color-scheme" content="light" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <link rel="icon" type="image/svg+xml" href={favicon} />
+    <link rel="apple-touch-icon" href={favicon} />
+    <link rel="canonical" href={canonicalURL.toString()} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <meta name="googlebot" content={robots} />
+    <meta name="author" content={siteName} />
+    <meta name="application-name" content={siteName} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL.toString()} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${siteName} — ${siteConfig.tagline}`} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    {twitterHandle && (
+      <meta name="twitter:site" content={twitterHandle} />
+    )}
+    {twitterHandle && (
+      <meta name="twitter:creator" content={twitterHandle} />
+    )}
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content={`${siteName} — ${siteConfig.tagline}`} />
+
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <style is:inline set:html={brandCss} />
+    {customHead && <Fragment set:html={customHead} />}
+    {customCss && <style is:inline set:html={customCss} />}
+
+    <script is:inline>
+      // Reveal-on-scroll. Inlined to avoid hydration delay.
+      (() => {
+        if (typeof window === "undefined") return;
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const reveal = (el) => el.classList.add("is-shown");
+
+        if (reduced) {
+          document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".reveal").forEach(reveal);
+          });
+          return;
+        }
+
+        const obs = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                reveal(entry.target);
+                obs.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+        );
+
+        const init = () => {
+          document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init);
+        } else {
+          init();
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a
+      href="#main"
+      title="Skip navigation"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-strong focus:text-white focus:rounded-md"
+    >
+      Skip to content
+    </a>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .focus\:not-sr-only:focus {
+    position: fixed;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+</style>

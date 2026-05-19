@@ -1,0 +1,101 @@
+---
+interface ImageAsset {
+  url: string;
+  alt?: string;
+}
+
+const {
+  heading = "See Aurora in action",
+  subheading = "A two-minute walkthrough of the features that help teams ship faster.",
+  provider = "youtube",
+  videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  poster = null,
+} = Astro.props as {
+  heading?: string;
+  subheading?: string;
+  provider?: "youtube" | "vimeo" | "custom" | string;
+  videoUrl?: string;
+  poster?: ImageAsset | null;
+};
+
+function videoEmbedUrl(url: string, videoProvider: string) {
+  const trimmed = url.trim();
+  if (!trimmed) return "";
+  try {
+    const parsed = new URL(trimmed);
+    if (videoProvider === "youtube" || parsed.hostname.includes("youtube") || parsed.hostname.includes("youtu.be")) {
+      const id = parsed.hostname.includes("youtu.be")
+        ? parsed.pathname.replace("/", "")
+        : parsed.searchParams.get("v") ?? parsed.pathname.split("/").filter(Boolean).pop();
+      return id ? `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1` : "";
+    }
+    if (videoProvider === "vimeo" || parsed.hostname.includes("vimeo")) {
+      const id = parsed.pathname.split("/").filter(Boolean).pop();
+      return id ? `https://player.vimeo.com/video/${id}?dnt=1` : "";
+    }
+    return videoProvider === "custom" ? trimmed : "";
+  } catch {
+    return "";
+  }
+}
+
+const embedUrl = videoEmbedUrl(videoUrl, provider);
+---
+
+<section class="relative py-20 md:py-28">
+  <div class="container-content">
+    <div class="reveal text-center max-w-2xl mx-auto mb-12">
+      <h2
+        class="text-[1.8rem] md:text-[2.4rem] font-bold leading-[1.05] text-strong"
+        style="letter-spacing: -0.04em;"
+      >
+        {heading}
+      </h2>
+      <p class="mt-5 text-[1.05rem] text-soft max-w-[44ch] mx-auto">
+        {subheading}
+      </p>
+    </div>
+
+    <div class="reveal max-w-4xl mx-auto" data-delay="1">
+      <div
+        class="relative overflow-hidden bg-elevated"
+        style="border-radius: 12px; aspect-ratio: 16 / 9;"
+      >
+        {embedUrl ? (
+          <iframe
+            src={embedUrl}
+            title={heading}
+            class="absolute inset-0 h-full w-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        ) : (
+          <>
+            {poster?.url ? (
+              <img src={poster.url} alt={poster.alt ?? ""} class="absolute inset-0 h-full w-full object-cover" />
+            ) : (
+              <div class="absolute inset-0 aurora-gradient-bg-subtle" aria-hidden="true"></div>
+            )}
+
+            <button
+              type="button"
+              aria-label="Play video"
+              class="absolute inset-0 flex items-center justify-center group cursor-pointer"
+            >
+              <div
+                class="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center bg-strong text-white transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+                style="border-radius: 50%;"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="ml-1" aria-hidden="true">
+                  <polygon points="8,5 20,12 8,19" />
+                </svg>
+              </div>
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

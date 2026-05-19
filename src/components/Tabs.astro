@@ -1,0 +1,195 @@
+---
+import Icon from "~/components/Icon.astro";
+
+interface TabItem {
+  id?: string;
+  label: string;
+  title: string;
+  description: string;
+  features: string[];
+  image?: {
+    url: string;
+    alt?: string;
+  } | null;
+}
+
+const defaultTabs: TabItem[] = [
+  {
+    id: "overview",
+    label: "Overview",
+    title: "Everything at a glance",
+    description: "Get a high-level view of your projects, team activity, and upcoming deadlines. Aurora surfaces what matters so you can focus on the work that moves the needle.",
+    features: ["Project summaries", "Activity feed", "Quick actions", "Priority inbox"],
+  },
+  {
+    id: "analytics",
+    label: "Analytics",
+    title: "Data-driven decisions",
+    description: "Track team velocity, project health, and resource allocation with dashboards that update in real time. Spot bottlenecks before they slow you down.",
+    features: ["Velocity charts", "Burndown reports", "Resource heatmaps", "Custom metrics"],
+  },
+  {
+    id: "automation",
+    label: "Automation",
+    title: "Work on autopilot",
+    description: "Set up rules that handle the repetitive stuff: status updates, assignments, notifications, and handoffs. Build workflows once, let them run forever.",
+    features: ["Rule builder", "Triggers & actions", "Templates library", "Webhook support"],
+  },
+];
+
+const {
+  heading = "One platform, every capability",
+  tabItems = defaultTabs,
+} = Astro.props as {
+  heading?: string;
+  tabItems?: TabItem[];
+};
+
+const tabs = tabItems.length ? tabItems : defaultTabs;
+---
+
+<section class="relative py-20 md:py-28 bg-surface">
+  <div class="container-content">
+    <div class="reveal mb-14 md:mb-18 max-w-2xl">
+      <h2
+        class="text-[1.8rem] md:text-[2.4rem] font-bold leading-[1.05] text-strong"
+        style="letter-spacing: -0.04em;"
+      >
+        {heading}
+      </h2>
+    </div>
+
+    <div class="reveal" data-delay="1">
+      <!-- Tab bar -->
+      <div
+        class="flex gap-0 border-b border-line-soft"
+        role="tablist"
+        aria-label="Feature tabs"
+        id="aurora-tablist"
+      >
+        {
+          tabs.map((tab, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`tab-${tab.id ?? tab.label.toLowerCase().replace(/\s+/g, "-")}`}
+              aria-controls={`panel-${tab.id ?? tab.label.toLowerCase().replace(/\s+/g, "-")}`}
+              aria-selected={i === 0 ? "true" : "false"}
+              tabindex={i === 0 ? "0" : "-1"}
+              class={`aurora-tab px-5 py-3 text-[14px] font-semibold transition-colors duration-200 border-b-2 -mb-px ${
+                i === 0
+                  ? "text-strong border-strong"
+                  : "text-muted border-transparent hover:text-soft"
+              }`}
+              data-tab={tab.id ?? tab.label.toLowerCase().replace(/\s+/g, "-")}
+            >
+              {tab.label}
+            </button>
+          ))
+        }
+      </div>
+
+      <!-- Tab panels -->
+      {
+        tabs.map((tab, i) => (
+          <div
+            role="tabpanel"
+            id={`panel-${tab.id ?? tab.label.toLowerCase().replace(/\s+/g, "-")}`}
+            aria-labelledby={`tab-${tab.id ?? tab.label.toLowerCase().replace(/\s+/g, "-")}`}
+            class={`aurora-tab-panel pt-10 ${i === 0 ? "" : "hidden"}`}
+            data-panel={tab.id ?? tab.label.toLowerCase().replace(/\s+/g, "-")}
+          >
+            <div class={`grid grid-cols-1 gap-10 ${tab.image?.url ? "md:grid-cols-2" : ""}`}>
+              <div>
+                <h3
+                  class="text-[1.3rem] font-bold text-strong"
+                  style="letter-spacing: -0.02em;"
+                >
+                  {tab.title}
+                </h3>
+                <p class="mt-4 text-[15px] leading-relaxed text-soft max-w-[44ch]">
+                  {tab.description}
+                </p>
+                <ul class="mt-6 space-y-3">
+                  {tab.features.map((f) => (
+                    <li class="flex items-center gap-2.5 text-[14px] text-soft">
+                      <Icon name="check" size={15} class="shrink-0 text-strong" stroke={2} />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {tab.image?.url ? (
+                <div
+                  class="relative overflow-hidden bg-elevated"
+                  style="border-radius: 12px; min-height: 260px;"
+                >
+                  <img
+                    src={tab.image.url}
+                    alt={tab.image.alt ?? tab.title ?? tab.label}
+                    class="absolute inset-0 h-full w-full object-cover"
+                  />
+                </div>
+              ) : null}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  function initTabs() {
+    const tablist = document.getElementById("aurora-tablist");
+    if (!tablist) return;
+
+    const tabs = tablist.querySelectorAll<HTMLButtonElement>(".aurora-tab");
+    const panels = document.querySelectorAll<HTMLElement>(".aurora-tab-panel");
+
+    function activate(id: string) {
+      tabs.forEach((tab) => {
+        const isActive = tab.dataset.tab === id;
+        tab.setAttribute("aria-selected", String(isActive));
+        tab.tabIndex = isActive ? 0 : -1;
+        tab.classList.toggle("text-strong", isActive);
+        tab.classList.toggle("border-strong", isActive);
+        tab.classList.toggle("text-muted", !isActive);
+        tab.classList.toggle("border-transparent", !isActive);
+      });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle("hidden", panel.dataset.panel !== id);
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        if (tab.dataset.tab) activate(tab.dataset.tab);
+      });
+    });
+
+    tablist.addEventListener("keydown", (e) => {
+      const keys = ["ArrowLeft", "ArrowRight"];
+      if (!keys.includes((e as KeyboardEvent).key)) return;
+
+      const current = tablist.querySelector<HTMLButtonElement>('[aria-selected="true"]');
+      if (!current) return;
+
+      const tabsArr = Array.from(tabs);
+      const idx = tabsArr.indexOf(current);
+      const next = (e as KeyboardEvent).key === "ArrowRight"
+        ? tabsArr[(idx + 1) % tabsArr.length]
+        : tabsArr[(idx - 1 + tabsArr.length) % tabsArr.length];
+
+      if (next?.dataset.tab) {
+        activate(next.dataset.tab);
+        next.focus();
+      }
+    });
+  }
+
+  initTabs();
+  document.addEventListener("astro:after-swap", initTabs);
+</script>

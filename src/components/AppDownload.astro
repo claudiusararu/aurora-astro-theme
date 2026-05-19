@@ -1,0 +1,106 @@
+---
+const {
+  heading = "Take Aurora everywhere",
+  subheading = "Stay on top of your projects from anywhere. Native apps for iOS and Android with full offline support.",
+  appStoreUrl = "#app-store",
+  googlePlayUrl = "#google-play",
+  note = "Requires iOS 16+ or Android 12+. Free to download.",
+  visualType = "phone",
+  image = null,
+} = Astro.props as {
+  heading?: string;
+  subheading?: string;
+  appStoreUrl?: string;
+  googlePlayUrl?: string;
+  note?: string;
+  visualType?: "phone" | "image" | string;
+  image?: { url: string; alt?: string } | null;
+};
+
+const showAppStore = appStoreUrl.trim().length > 0;
+const showGooglePlay = googlePlayUrl.trim().length > 0;
+---
+
+<section class="relative py-20 md:py-28 bg-surface">
+  <div class="container-content">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <!-- Text -->
+      <div class="reveal">
+        <h2
+          class="text-[1.8rem] md:text-[2.4rem] font-bold leading-[1.05] text-strong"
+          style="letter-spacing: -0.04em;"
+        >
+          {heading}
+        </h2>
+        <p class="mt-5 text-[1.05rem] text-soft max-w-[40ch]">
+          {subheading}
+        </p>
+
+        {(showAppStore || showGooglePlay) ? (
+          <div class="mt-8 flex flex-wrap gap-3">
+            {showAppStore ? (
+              <a
+                href={appStoreUrl}
+                class="inline-flex items-center gap-3 px-5 py-3 bg-strong text-white transition-opacity duration-200 hover:opacity-90"
+                style="border-radius: 10px;"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                <div class="text-left">
+                  <div class="text-[10px] font-normal leading-none opacity-80">Download on the</div>
+                  <div class="text-[15px] font-semibold leading-tight mt-0.5">App Store</div>
+                </div>
+              </a>
+            ) : null}
+
+            {showGooglePlay ? (
+              <a
+                href={googlePlayUrl}
+                class="inline-flex items-center gap-3 px-5 py-3 border border-line-soft bg-bg text-strong transition-colors duration-200 hover:bg-surface"
+                style="border-radius: 10px;"
+              >
+                <svg width="20" height="22" viewBox="0 0 20 22" fill="currentColor" aria-hidden="true">
+                  <path d="M1.22.97L12.2 11 1.22 21.03C.93 20.7.75 20.23.75 19.64V2.36c0-.59.18-1.06.47-1.39zm1.1-.62L14.05 9.6l-2.72 2.72L1.83.14c.17-.02.33.04.49.21zm11.95 10.37l2.89 1.67c.63.36.63.96 0 1.32l-3.08 1.78-2.95-2.95 3.14-1.82zM2.32 21.86l9.5-9.5 2.72 2.72L2.81 21.65c-.17.17-.33.23-.49.21z"/>
+                </svg>
+                <div class="text-left">
+                  <div class="text-[10px] font-normal leading-none text-muted">Get it on</div>
+                  <div class="text-[15px] font-semibold leading-tight mt-0.5">Google Play</div>
+                </div>
+              </a>
+            ) : null}
+          </div>
+        ) : null}
+
+        <p class="reveal mt-5 text-[12px] text-muted" data-delay="1">
+          {note}
+        </p>
+      </div>
+
+      <!-- Phone mockup placeholder -->
+      <div class="reveal flex justify-center" data-delay="2">
+        <div
+          class="relative w-[240px] md:w-[280px]"
+        >
+          {visualType === "image" && image?.url ? (
+            <div class="overflow-hidden border border-line-soft bg-surface" style="border-radius: 24px; aspect-ratio: 9 / 16;">
+              <img src={image.url} alt={image.alt ?? ""} class="h-full w-full object-cover" />
+            </div>
+          ) : (
+            <div
+              class="bg-strong overflow-hidden p-2"
+              style="border-radius: 32px; aspect-ratio: 9 / 19;"
+            >
+              <div
+                class="w-full h-full aurora-gradient-bg-subtle flex items-center justify-center"
+                style="border-radius: 24px;"
+              >
+                <span class="text-[12px] font-medium text-muted">App preview</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

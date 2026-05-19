@@ -1,0 +1,166 @@
+---
+import Icon from "~/components/Icon.astro";
+
+type FeatureIconName =
+  | "search"
+  | "grid"
+  | "globe"
+  | "gauge"
+  | "layers"
+  | "clock"
+  | "rocket"
+  | "sparkle"
+  | "code"
+  | "image"
+  | "palette"
+  | "send";
+
+type FeatureItem = {
+  icon?: FeatureIconName;
+  title?: string;
+  description?: string;
+};
+
+interface Props {
+  heading?: string;
+  items?: string;
+  featureItems?: FeatureItem[];
+  sectionId?: string;
+}
+
+const iconNames: FeatureIconName[] = [
+  "search",
+  "grid",
+  "globe",
+  "gauge",
+  "layers",
+  "clock",
+  "rocket",
+  "sparkle",
+  "code",
+  "image",
+  "palette",
+  "send",
+];
+
+const defaultFeatures: Required<FeatureItem>[] = [
+  {
+    icon: "search",
+    title: "Navigate your path with clarity",
+    description: "Find what you need instantly. Smart search, contextual filters, and intelligent suggestions keep your team focused.",
+  },
+  {
+    icon: "grid",
+    title: "Organize your work efficiently",
+    description: "Flexible project boards, nested tasks, and custom workflows adapt to how your team actually works.",
+  },
+  {
+    icon: "globe",
+    title: "Sync across all platforms",
+    description: "Real-time sync on web, desktop, and mobile. Every change propagates instantly, no refresh required.",
+  },
+  {
+    icon: "gauge",
+    title: "Advanced analytics",
+    description: "Understand your team's velocity, bottlenecks, and patterns with dashboards that surface insights automatically.",
+  },
+  {
+    icon: "layers",
+    title: "Team collaboration",
+    description: "Threaded comments, live cursors, and shared workspaces. Work together without stepping on each other's toes.",
+  },
+  {
+    icon: "clock",
+    title: "Priority scheduling",
+    description: "Automatic prioritization based on deadlines, dependencies, and team capacity. The right work, at the right time.",
+  },
+];
+
+const {
+  heading = "Feature management that fits your workflow",
+  items = "",
+  featureItems,
+  sectionId = "features",
+} = Astro.props;
+
+function isFeatureIcon(value: unknown): value is FeatureIconName {
+  return typeof value === "string" && iconNames.includes(value as FeatureIconName);
+}
+
+function fallbackIcon(index: number): FeatureIconName {
+  return iconNames[index % iconNames.length] ?? "search";
+}
+
+function normalizeFeature(item: FeatureItem, index: number): Required<FeatureItem> {
+  return {
+    icon: isFeatureIcon(item.icon) ? item.icon : fallbackIcon(index),
+    title: item.title ?? "",
+    description: item.description ?? "",
+  };
+}
+
+function parseFeatureLine(line: string, index: number): Required<FeatureItem> {
+  const parts = line.split("|").map((part) => part.trim());
+  const hasIcon = parts.length >= 3 && isFeatureIcon(parts[0]);
+  return {
+    icon: hasIcon ? parts[0] : fallbackIcon(index),
+    title: hasIcon ? parts[1] ?? "" : parts[0] ?? "",
+    description: hasIcon ? parts.slice(2).join("|") : parts.slice(1).join("|"),
+  };
+}
+
+const customFeatures = Array.isArray(featureItems)
+  ? featureItems.map(normalizeFeature).filter((feature) => feature.title || feature.description)
+  : [];
+
+const parsedFeatures = items
+  .split("\n")
+  .map((line) => line.trim())
+  .filter(Boolean)
+  .map(parseFeatureLine)
+  .filter((feature) => feature.title || feature.description);
+
+const features = customFeatures.length > 0 ? customFeatures : parsedFeatures.length > 0 ? parsedFeatures : defaultFeatures;
+---
+
+<section id={sectionId} class="relative py-24 md:py-32">
+  <div class="container-content">
+    <div class="reveal mb-16 md:mb-20 max-w-2xl">
+      <h2
+        class="text-[1.8rem] md:text-[2.4rem] font-bold leading-[1.05] text-strong"
+        style="letter-spacing: -0.04em;"
+      >
+        {heading}
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line-soft" style="border-radius: 12px; overflow: hidden; border: 1px solid var(--color-line-soft);">
+      {
+        features.map((feature, i) => (
+          <article
+            class="reveal bg-bg p-8 md:p-10"
+            data-delay={Math.min(i + 1, 6)}
+          >
+            <div
+              class="inline-flex items-center justify-center w-10 h-10 rounded-lg mb-6"
+              style="background: var(--color-elevated);"
+            >
+              <Icon name={feature.icon as any} size={18} stroke={1.6} class="text-strong" />
+            </div>
+
+            <h3
+              class="text-[1rem] font-semibold text-strong"
+              style="letter-spacing: -0.02em;"
+            >
+              {feature.title}
+            </h3>
+
+            <p class="mt-3 text-[0.9rem] leading-relaxed text-soft">
+              {feature.description}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

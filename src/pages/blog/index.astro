@@ -1,0 +1,81 @@
+---
+import Layout from "~/layouts/Layout.astro";
+import Header from "~/components/Header.astro";
+import Footer from "~/components/Footer.astro";
+import BlogHero from "~/components/BlogHero.astro";
+import BlogGrid from "~/components/BlogGrid.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const featuredPost = posts[0];
+
+function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+}
+
+function initials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
+}
+---
+
+<Layout title="Blog — Aurora">
+  <Header />
+  <main id="main">
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="aurora-gradient-bg-subtle" style="padding-top: 8rem; padding-bottom: 6rem;">
+        <div class="container-content text-center">
+          <h1
+            class="reveal text-display-sm md:text-display max-w-[14ch] mx-auto"
+            style="letter-spacing: -0.04em;"
+          >
+            Blog
+          </h1>
+          <p class="reveal mt-6 text-[1.1rem] md:text-[1.2rem] leading-relaxed text-soft max-w-[48ch] mx-auto" data-delay="1">
+            Insights on product management, team collaboration, and building software that ships.
+          </p>
+        </div>
+      </div>
+      <div
+        class="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
+        style="background: linear-gradient(to top, var(--color-bg), transparent);"
+        aria-hidden="true"
+      ></div>
+    </section>
+
+    {
+      featuredPost && (
+        <BlogHero
+          title={featuredPost.data.title}
+          category={featuredPost.data.category}
+          date={formatDate(featuredPost.data.date)}
+          author={featuredPost.data.author}
+          authorInitials={initials(featuredPost.data.author)}
+          slug={featuredPost.id.replace(/\.md$/, "")}
+          image={featuredPost.data.image}
+          imageAlt={featuredPost.data.title}
+        />
+      )
+    }
+
+    <!-- Blog grid -->
+    <section class="py-16 md:py-24">
+      <div class="container-content">
+        <BlogGrid posts={posts} />
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

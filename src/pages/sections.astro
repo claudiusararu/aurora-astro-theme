@@ -1,0 +1,261 @@
+---
+import Layout from "~/layouts/Layout.astro";
+import Header from "~/components/Header.astro";
+import Footer from "~/components/Footer.astro";
+import { getCollection } from "astro:content";
+import AppDownload from "~/components/AppDownload.astro";
+import BlogGrid from "~/components/BlogGrid.astro";
+import BlogHero from "~/components/BlogHero.astro";
+import CTA from "~/components/CTA.astro";
+import Carousel from "~/components/Carousel.astro";
+import Comparison from "~/components/Comparison.astro";
+import Contact from "~/components/Contact.astro";
+import FAQ from "~/components/FAQ.astro";
+import Features from "~/components/Features.astro";
+import Gallery from "~/components/Gallery.astro";
+import Hero from "~/components/Hero.astro";
+import ImageText from "~/components/ImageText.astro";
+import LegalContent from "~/components/LegalContent.astro";
+import LogoCloud from "~/components/LogoCloud.astro";
+import Map from "~/components/Map.astro";
+import Newsletter from "~/components/Newsletter.astro";
+import Pricing from "~/components/Pricing.astro";
+import Sidebar from "~/components/Sidebar.astro";
+import Stats from "~/components/Stats.astro";
+import Tabs from "~/components/Tabs.astro";
+import Team from "~/components/Team.astro";
+import Testimonials from "~/components/Testimonials.astro";
+import Timeline from "~/components/Timeline.astro";
+import Video from "~/components/Video.astro";
+
+const posts = (await getCollection("blog")).filter((post) => !post.data.draft);
+---
+
+<Layout title="All Sections - Aurora" description="Browse the reusable sections included with Aurora.">
+  <Header />
+  <main id="main">
+    <section class="relative overflow-hidden border-b border-line-soft">
+      <div class="container-content py-24 md:py-32 text-center">
+        <p class="reveal text-eyebrow mb-4">SECTION LIBRARY</p>
+        <h1 class="reveal text-display-sm md:text-display max-w-[18ch] mx-auto" style="letter-spacing: -0.04em;">Website Sections</h1>
+        <p class="reveal mt-6 text-[1.05rem] md:text-[1.2rem] leading-relaxed text-soft max-w-[54ch] mx-auto" data-delay="1">Browse 24 reusable Astro sections included in this theme.</p>
+      </div>
+    </section>
+    <div id="app-download" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">App Download</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <AppDownload />
+
+    <div id="blog-grid" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Blog Grid</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <BlogGrid posts={posts} />
+
+    <div id="blog-hero" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Blog Hero</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <BlogHero />
+
+    <div id="cta" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">CTA</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <CTA />
+
+    <div id="carousel" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Carousel</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Carousel />
+
+    <div id="comparison" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Comparison</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Comparison />
+
+    <div id="contact" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Contact</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Contact />
+
+    <div id="faq" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">FAQ</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <FAQ />
+
+    <div id="features" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Features</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Features />
+
+    <div id="gallery" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Gallery</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Gallery />
+
+    <div id="hero" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Hero</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Hero />
+
+    <div id="image-text" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Image Text</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <ImageText />
+
+    <div id="legal-content" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Legal Content</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <LegalContent />
+
+    <div id="logo-cloud" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Logo Cloud</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <LogoCloud />
+
+    <div id="map" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Map</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Map />
+
+    <div id="newsletter" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Newsletter</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Newsletter />
+
+    <div id="pricing" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Pricing</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Pricing />
+
+    <div id="sidebar" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Sidebar</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Sidebar />
+
+    <div id="stats" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Stats</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Stats />
+
+    <div id="tabs" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Tabs</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Tabs />
+
+    <div id="team" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Team</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Team />
+
+    <div id="testimonials" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Testimonials</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Testimonials />
+
+    <div id="timeline" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Timeline</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Timeline />
+
+    <div id="video" class="container-content py-8">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-line-soft"></div>
+        <span class="text-[12px] font-mono uppercase tracking-wider text-muted">Video</span>
+        <div class="flex-1 h-px bg-line-soft"></div>
+      </div>
+    </div>
+    <Video />
+  </main>
+  <Footer />
+</Layout>

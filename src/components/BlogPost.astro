@@ -1,0 +1,265 @@
+---
+import Icon from "~/components/Icon.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  author: string;
+  category: string;
+  image?: string;
+}
+
+const { title, description, date, author, category, image } = Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+}).format(date);
+---
+
+<article>
+  <header class="container-content pt-12 md:pt-20 pb-10 md:pb-14">
+    <div class="max-w-3xl mx-auto">
+      <a
+        href="/blog/"
+        class="reveal inline-flex items-center gap-1.5 text-[14px] text-soft hover:text-strong transition-colors duration-200 mb-8"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5" />
+          <path d="m11 18-6-6 6-6" />
+        </svg>
+        Back to blog
+      </a>
+
+      <div class="reveal" data-delay="1">
+        <span class="inline-block px-2 py-0.5 rounded text-[11px] font-mono uppercase tracking-wider text-muted bg-elevated">
+          {category}
+        </span>
+
+        <h1
+          class="text-display-sm mt-5"
+          style="letter-spacing: -0.035em;"
+        >
+          {title}
+        </h1>
+
+        <p class="mt-5 text-[1.1rem] leading-relaxed text-soft max-w-[52ch]">
+          {description}
+        </p>
+
+        <div class="flex items-center gap-3 mt-8">
+          <div class="w-9 h-9 rounded-full bg-strong flex items-center justify-center text-[12px] font-bold text-white">
+            {author.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+          </div>
+          <div>
+            <div class="text-[14px] font-medium text-strong">{author}</div>
+            <time datetime={date.toISOString()} class="text-[13px] text-muted">
+              {formattedDate}
+            </time>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {image && (
+    <div class="container-content">
+      <div class="reveal max-w-4xl mx-auto" data-delay="2">
+        <img
+          src={image}
+          alt={title}
+          class="w-full rounded-xl aspect-[21/9] object-cover"
+          loading="eager"
+        />
+      </div>
+    </div>
+  )}
+
+  <div class="container-content py-12 md:py-16">
+    <div class="prose max-w-3xl mx-auto">
+      <slot />
+    </div>
+  </div>
+
+  <div class="container-content pb-16 md:pb-24">
+    <div class="max-w-3xl mx-auto pt-10 border-t border-line-soft">
+      <a
+        href="/blog/"
+        class="inline-flex items-center gap-1.5 text-[14px] font-medium text-soft hover:text-strong transition-colors duration-200"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5" />
+          <path d="m11 18-6-6 6-6" />
+        </svg>
+        All posts
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .prose {
+    color: var(--color-text);
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .prose :global(h2) {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-strong);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-top: 2.5em;
+    margin-bottom: 0.75em;
+  }
+
+  .prose :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-strong);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+  }
+
+  .prose :global(h4) {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-strong);
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+    margin-top: 1.75em;
+    margin-bottom: 0.5em;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.25em;
+  }
+
+  .prose :global(a) {
+    color: var(--color-strong);
+    text-decoration: underline;
+    text-decoration-color: var(--color-line);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.2s;
+  }
+
+  .prose :global(a:hover) {
+    text-decoration-color: var(--color-strong);
+  }
+
+  .prose :global(strong) {
+    font-weight: 600;
+    color: var(--color-strong);
+  }
+
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--color-line);
+    padding-left: 1.25em;
+    margin: 1.75em 0;
+    color: var(--color-soft);
+    font-style: italic;
+  }
+
+  .prose :global(blockquote p) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(ul) {
+    list-style-type: disc;
+    padding-left: 1.5em;
+    margin-bottom: 1.25em;
+  }
+
+  .prose :global(ol) {
+    list-style-type: decimal;
+    padding-left: 1.5em;
+    margin-bottom: 1.25em;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.4em;
+    padding-left: 0.25em;
+  }
+
+  .prose :global(li::marker) {
+    color: var(--color-muted);
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-elevated);
+    color: var(--color-strong);
+    padding: 0.2em 0.4em;
+    border-radius: 5px;
+    border: 1px solid var(--color-line-soft);
+  }
+
+  .prose :global(pre) {
+    background: var(--color-strong);
+    color: var(--color-bg);
+    padding: 1.25em 1.5em;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 1.75em 0;
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-line-soft);
+    margin: 2.5em 0;
+  }
+
+  .prose :global(img) {
+    border-radius: 10px;
+    margin: 2em 0;
+    width: 100%;
+  }
+
+  .prose :global(figure) {
+    margin: 2em 0;
+  }
+
+  .prose :global(figcaption) {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    margin-top: 0.75em;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.75em 0;
+    font-size: 0.95rem;
+  }
+
+  .prose :global(th) {
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-strong);
+    padding: 0.75em 1em;
+    border-bottom: 2px solid var(--color-line);
+  }
+
+  .prose :global(td) {
+    padding: 0.75em 1em;
+    border-bottom: 1px solid var(--color-line-soft);
+    color: var(--color-soft);
+  }
+</style>

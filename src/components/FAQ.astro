@@ -1,0 +1,192 @@
+---
+import Icon from "~/components/Icon.astro";
+
+type FaqItem = {
+  question?: string;
+  answer?: string;
+  q?: string;
+  a?: string;
+};
+
+interface Props {
+  heading?: string;
+  items?: string;
+  faqItems?: FaqItem[];
+  contactEnabled?: boolean;
+  contactHeading?: string;
+  contactDescription?: string;
+  contactEmail?: string;
+  responseTime?: string;
+  contactUrl?: string;
+}
+
+const defaultFaqs = [
+  {
+    question: "How does the free trial work?",
+    answer:
+      "Sign up with your email and start using Aurora immediately. No credit card required. Your 14-day trial includes full access to every Pro feature, and you can downgrade at any time.",
+  },
+  {
+    question: "Can I switch plans later?",
+    answer:
+      "Absolutely. Upgrade or downgrade anytime from your billing settings. When upgrading, you'll be prorated for the remaining time. When downgrading, you keep Pro features until the end of your current billing cycle.",
+  },
+  {
+    question: "What happens to my data if I cancel?",
+    answer:
+      "You own your data, always. Export everything, including projects, analytics history, team settings, and integrations, as JSON or CSV with one click. After cancellation, your data is retained for 30 days before deletion.",
+  },
+  {
+    question: "Do you offer discounts for startups?",
+    answer:
+      "Yes. We offer 50% off the first year for startups with fewer than 20 employees and under $5M in funding. Apply through our startup program page with your company details.",
+  },
+  {
+    question: "What security certifications do you have?",
+    answer:
+      "Aurora is SOC 2 Type II certified, GDPR compliant, and HIPAA ready on Team plans. We undergo annual penetration testing and continuous vulnerability scanning. All data is encrypted at rest and in transit.",
+  },
+  {
+    question: "How does team billing work?",
+    answer:
+      "Team plans are billed per workspace, not per seat. Add unlimited team members to your workspace at no extra cost. Each workspace gets its own billing cycle and can be managed independently.",
+  },
+];
+
+const {
+  heading = "Frequently asked questions",
+  items = "",
+  faqItems = [],
+  contactEnabled = true,
+  contactHeading = "Still have questions?",
+  contactDescription = "Can't find the answer you're looking for? Our team is here to help. Reach out and we'll get back to you within 24 hours.",
+  contactEmail = "support@aurora.io",
+  responseTime = "Within 24 hours",
+  contactUrl = "#contact",
+} = Astro.props;
+
+const structuredFaqs = faqItems
+  .map((item) => ({
+    question: (item.question ?? item.q ?? "").trim(),
+    answer: (item.answer ?? item.a ?? "").trim(),
+  }))
+  .filter((item) => item.question || item.answer);
+
+const legacyFaqs = items
+  .split("\n")
+  .map((line) => line.trim())
+  .filter(Boolean)
+  .map((line) => {
+    const [question = "", ...answerParts] = line.split("|");
+    return {
+      question: question.trim(),
+      answer: answerParts.join("|").trim(),
+    };
+  })
+  .filter((item) => item.question || item.answer);
+
+const faqs = structuredFaqs.length > 0 ? structuredFaqs : legacyFaqs.length > 0 ? legacyFaqs : defaultFaqs;
+---
+
+<section id="faq" class="relative py-24 md:py-32">
+  <div class="container-content">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+      <!-- Left: FAQ accordion (wider) -->
+      <div class={contactEnabled ? "lg:col-span-7" : "lg:col-span-8 lg:col-start-3"}>
+        <div class="reveal mb-10">
+          <h2
+            class="text-[1.8rem] md:text-[2.2rem] font-bold leading-[1.05] text-strong"
+            style="letter-spacing: -0.04em;"
+          >
+            {heading}
+          </h2>
+        </div>
+
+        <div class="divide-y divide-line-soft border-t border-line-soft">
+          {
+            faqs.map((faq, i) => (
+              <details class="reveal group py-5 md:py-6" data-delay={Math.min(i + 1, 6)}>
+                <summary class="flex items-start justify-between gap-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                  <span class="text-[1rem] md:text-[1.05rem] font-medium text-strong group-hover:opacity-70 transition-opacity duration-200">
+                    {faq.question}
+                  </span>
+                  <span class="shrink-0 mt-0.5 inline-flex items-center justify-center w-6 h-6 text-muted group-open:text-strong transition-colors duration-200">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    class="group-open:rotate-45 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                    aria-hidden="true"
+                  >
+                      <path d="M6 1v10M1 6h10" />
+                    </svg>
+                  </span>
+                </summary>
+                <div class="mt-3 pr-10 text-[14px] leading-relaxed text-soft max-w-[60ch]">
+                  {faq.answer}
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- Right: Contact card -->
+      {
+        contactEnabled && (
+          <div class="lg:col-span-5">
+            <div class="reveal sticky top-24" data-delay="2">
+              <div class="bg-surface p-8 md:p-10" style="border-radius: 12px; border: 1px solid var(--color-line-soft);">
+                <h3
+                  class="text-[1.2rem] font-bold text-strong"
+                  style="letter-spacing: -0.02em;"
+                >
+                  {contactHeading}
+                </h3>
+                <p class="mt-3 text-[0.9rem] leading-relaxed text-soft">
+                  {contactDescription}
+                </p>
+
+                <div class="mt-6 space-y-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-elevated flex items-center justify-center" style="border-radius: 8px;">
+                      <Icon name="send" size={14} class="text-strong" />
+                    </div>
+                    <div>
+                      <div class="text-[12px] text-muted">Email us at</div>
+                      <a href={`mailto:${contactEmail}`} class="text-[14px] font-medium text-strong hover:opacity-70 transition-opacity">
+                        {contactEmail}
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-elevated flex items-center justify-center" style="border-radius: 8px;">
+                      <Icon name="clock" size={14} class="text-strong" />
+                    </div>
+                    <div>
+                      <div class="text-[12px] text-muted">Response time</div>
+                      <span class="text-[14px] font-medium text-strong">{responseTime}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <a
+                  href={contactUrl}
+                  class="btn btn-brand btn-lg w-full justify-center mt-8"
+                  style="border-radius: 8px;"
+                >
+                  Contact us
+                </a>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

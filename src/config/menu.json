@@ -1,0 +1,28 @@
+{
+  "main": [
+    {
+      "label": "Features",
+      "url": "/features/"
+    },
+    {
+      "label": "Pricing",
+      "url": "/pricing/"
+    },
+    {
+      "label": "Customers",
+      "url": "/customers/"
+    },
+    {
+      "label": "Resources",
+      "url": "/resources/"
+    },
+    {
+      "label": "Blog",
+      "url": "/blog/"
+    }
+  ],
+  "cta": {
+    "label": "Contact",
+    "url": "/contact/"
+  }
+}

@@ -1,0 +1,292 @@
+---
+import Icon from "~/components/Icon.astro";
+
+type LayoutType = "centered" | "split-image" | "banner-compact";
+type BackgroundMode = "default" | "color" | "image";
+type Spacing = "compact" | "normal" | "large";
+type ImageAsset = string | { url?: string; alt?: string } | null | undefined;
+type SocialProofItem = {
+  text?: string;
+  name?: string;
+  role?: string;
+  initials?: string;
+};
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  subheading?: string;
+  layoutType?: LayoutType;
+  spacing?: Spacing;
+  backgroundMode?: BackgroundMode;
+  backgroundColor?: string;
+  backgroundImage?: ImageAsset;
+  textColor?: string;
+  image?: ImageAsset;
+  socialProofEnabled?: boolean;
+  socialProofItems?: SocialProofItem[];
+  quotes?: string;
+  primaryCtaEnabled?: boolean;
+  primaryCta?: string;
+  primaryCtaUrl?: string;
+  secondaryCtaEnabled?: boolean;
+  secondaryCta?: string;
+  secondaryCtaUrl?: string;
+  buttonLabel?: string;
+}
+
+const defaultSocialProofItems = [
+  {
+    text: "Switched from Monday in a weekend. Never looked back.",
+    name: "David Park",
+    role: "Engineering Lead",
+    initials: "DP",
+  },
+  {
+    text: "Aurora is what we wished Notion was for project management.",
+    name: "Lisa Moreau",
+    role: "Product Director",
+    initials: "LM",
+  },
+  {
+    text: "Our team's productivity metrics speak for themselves. Up 60%.",
+    name: "James Okafor",
+    role: "VP Operations",
+    initials: "JO",
+  },
+];
+
+const {
+  eyebrow = "",
+  heading = "Why teams are leaving Monday for Aurora",
+  subheading = "Join thousands of teams who made the switch and never looked back.",
+  layoutType = "centered",
+  spacing = "normal",
+  backgroundMode = "default",
+  backgroundColor = "#ffffff",
+  backgroundImage = null,
+  textColor = "#07070b",
+  image = null,
+  socialProofEnabled = true,
+  socialProofItems = [],
+  quotes = "",
+  primaryCtaEnabled = true,
+  primaryCta,
+  primaryCtaUrl = "#start",
+  secondaryCtaEnabled = false,
+  secondaryCta = "Learn more",
+  secondaryCtaUrl = "#learn-more",
+  buttonLabel = "Start for free",
+} = Astro.props;
+
+function imageUrl(value: ImageAsset) {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  return value.url ?? "";
+}
+
+function imageAlt(value: ImageAsset, fallback: string) {
+  if (!value || typeof value === "string") return fallback;
+  return value.alt ?? fallback;
+}
+
+function initialsFromName(name: string) {
+  return name
+    .split(/\s+/)
+    .map((part) => part.trim()[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase() || "??";
+}
+
+const structuredProof = socialProofItems
+  .map((item) => {
+    const name = item.name ?? "";
+    return {
+      text: item.text ?? "",
+      name,
+      role: item.role ?? "",
+      initials: item.initials || initialsFromName(name),
+    };
+  })
+  .filter((item) => item.text || item.name || item.role);
+
+const legacyProof = quotes
+  .split("\n")
+  .map((line) => line.trim())
+  .filter(Boolean)
+  .map((line) => {
+    const [text = "", name = "", role = "", initials = ""] = line.split("|").map((part) => part.trim());
+    return { text, name, role, initials: initials || initialsFromName(name) };
+  });
+
+const proofItems = structuredProof.length > 0 ? structuredProof : legacyProof.length > 0 ? legacyProof : defaultSocialProofItems;
+const backgroundUrl = imageUrl(backgroundImage);
+const splitImageUrl = imageUrl(image);
+const splitImageAlt = imageAlt(image, "CTA image");
+const sectionPadding = spacing === "compact" ? "py-16 md:py-20" : spacing === "large" ? "py-28 md:py-40" : "py-24 md:py-32";
+const sectionStyle = [
+  backgroundMode === "color" ? `background: ${backgroundColor}` : "",
+  backgroundMode === "image" && backgroundUrl ? `background-image: url('${backgroundUrl.replace(/'/g, "%27")}')` : "",
+  backgroundMode === "image" && backgroundUrl ? "background-size: cover" : "",
+  backgroundMode === "image" && backgroundUrl ? "background-position: center" : "",
+  `color: ${textColor}`,
+].filter(Boolean).join("; ");
+const softColor = `color-mix(in oklab, ${textColor} 72%, transparent)`;
+const mutedColor = `color-mix(in oklab, ${textColor} 58%, transparent)`;
+const borderColor = `color-mix(in oklab, ${textColor} 18%, transparent)`;
+const primaryLabel = primaryCta ?? buttonLabel;
+---
+
+<section class:list={["relative overflow-hidden", sectionPadding]} style={sectionStyle}>
+  {backgroundMode === "default" && <div class="aurora-gradient-bg absolute inset-0" aria-hidden="true"></div>}
+  {backgroundMode === "image" && <div class="absolute inset-0 bg-white/45 backdrop-blur-[1px]" aria-hidden="true"></div>}
+
+  <div class="container-content relative">
+    {
+      layoutType === "banner-compact" ? (
+        <div class="grid items-center gap-8 md:grid-cols-[1fr_auto]">
+          <div class="max-w-3xl">
+            {eyebrow.trim() && <p class="mb-4 text-[12px] font-mono uppercase tracking-wider" style={`color: ${mutedColor};`}>{eyebrow}</p>}
+            <h2 class="text-[1.8rem] md:text-[2.35rem] font-bold leading-[1.05]" style={`letter-spacing: -0.04em; color: ${textColor};`}>
+              {heading}
+            </h2>
+            <p class="mt-4 max-w-[56ch] text-[1rem] leading-relaxed" style={`color: ${softColor};`}>
+              {subheading}
+            </p>
+            {socialProofEnabled && proofItems.length > 0 && (
+              <div class="mt-5 flex flex-wrap gap-2 text-[12px]" style={`color: ${softColor};`}>
+                {proofItems.slice(0, 3).map((item) => (
+                  <span class="rounded-full bg-white/50 px-3 py-1">{item.text}</span>
+                ))}
+              </div>
+            )}
+          </div>
+          <div class="flex flex-col items-center justify-center gap-3 sm:flex-row md:justify-end">
+            {primaryCtaEnabled && (
+              <a href={primaryCtaUrl} class="btn btn-brand btn-lg group" style="border-radius: 8px;">
+                {primaryLabel}
+                <Icon name="arrow-right" size={16} class="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0.5" />
+              </a>
+            )}
+            {secondaryCtaEnabled && (
+              <a href={secondaryCtaUrl} class="btn btn-ghost btn-lg" style={`border-radius: 8px; color: ${textColor}; border-color: ${borderColor};`}>
+                {secondaryCta}
+              </a>
+            )}
+          </div>
+        </div>
+      ) : layoutType === "split-image" ? (
+        <div class="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          <div>
+            {eyebrow.trim() && <p class="mb-5 text-[12px] font-mono uppercase tracking-wider" style={`color: ${mutedColor};`}>{eyebrow}</p>}
+            <h2 class="text-[1.9rem] md:text-[2.6rem] font-bold leading-[1.05]" style={`letter-spacing: -0.04em; color: ${textColor};`}>
+              {heading}
+            </h2>
+            <p class="mt-5 max-w-[44ch] text-[1.05rem] leading-relaxed" style={`color: ${softColor};`}>
+              {subheading}
+            </p>
+            <div class="mt-9 flex flex-col items-start justify-start gap-3 sm:flex-row">
+              {primaryCtaEnabled && (
+                <a href={primaryCtaUrl} class="btn btn-brand btn-lg group" style="border-radius: 8px;">
+                  {primaryLabel}
+                  <Icon name="arrow-right" size={16} class="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0.5" />
+                </a>
+              )}
+              {secondaryCtaEnabled && (
+                <a href={secondaryCtaUrl} class="btn btn-ghost btn-lg" style={`border-radius: 8px; color: ${textColor}; border-color: ${borderColor};`}>
+                  {secondaryCta}
+                </a>
+              )}
+            </div>
+            {socialProofEnabled && proofItems.length > 0 && (
+              <div class="mt-8 grid gap-6 md:grid-cols-2">
+                {proofItems.slice(0, 2).map((item) => (
+                  <div class="flex flex-col items-start p-6 text-left">
+                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-[14px] font-bold backdrop-blur-sm" style={`color: ${textColor};`}>
+                      {item.initials}
+                    </div>
+                    <p class="text-[0.9rem] italic leading-relaxed" style={`color: ${softColor};`}>&ldquo;{item.text}&rdquo;</p>
+                    <div class="mt-4">
+                      <div class="text-[13px] font-semibold" style={`color: ${textColor};`}>{item.name}</div>
+                      <div class="text-[11px]" style={`color: ${mutedColor};`}>{item.role}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div class="overflow-hidden rounded-2xl border border-line-soft bg-white/55 p-3 shadow-[0_24px_80px_-50px_rgba(7,7,11,0.35)]">
+            {
+              splitImageUrl ? (
+                <img src={splitImageUrl} alt={splitImageAlt} class="aspect-[4/3] w-full rounded-xl object-cover" loading="lazy" decoding="async" />
+              ) : (
+                <div class="aspect-[4/3] rounded-xl border border-line-soft bg-surface p-5">
+                  <div class="flex items-center gap-2 border-b border-line-soft pb-3">
+                    <span class="h-2.5 w-2.5 rounded-full" style="background: oklch(85% 0.16 30);"></span>
+                    <span class="h-2.5 w-2.5 rounded-full" style="background: oklch(85% 0.13 80);"></span>
+                    <span class="h-2.5 w-2.5 rounded-full" style="background: oklch(80% 0.18 145);"></span>
+                  </div>
+                  <div class="grid h-[calc(100%-38px)] grid-cols-3 gap-3 pt-5">
+                    {Array.from({ length: 6 }).map(() => (
+                      <div class="rounded-lg border border-line-soft bg-bg p-3">
+                        <span class="block h-2 w-1/2 rounded-full bg-line"></span>
+                        <span class="mt-4 block h-2 w-full rounded-full bg-line-soft"></span>
+                        <span class="mt-2 block h-2 w-2/3 rounded-full bg-line-soft"></span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+          </div>
+        </div>
+      ) : (
+        <>
+          <div class="reveal mx-auto max-w-3xl text-center">
+            {eyebrow.trim() && <p class="mb-5 text-[12px] font-mono uppercase tracking-wider" style={`color: ${mutedColor};`}>{eyebrow}</p>}
+            <h2 class="text-[1.8rem] md:text-[2.6rem] font-bold leading-[1.05]" style={`letter-spacing: -0.04em; color: ${textColor};`}>
+              {heading}
+            </h2>
+            <p class="mx-auto mt-5 max-w-[44ch] text-[1.05rem]" style={`color: ${softColor};`}>
+              {subheading}
+            </p>
+          </div>
+
+          {socialProofEnabled && proofItems.length > 0 && (
+            <div class="reveal mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-3" data-delay="2">
+              {proofItems.map((item, i) => (
+                <div class="reveal flex flex-col items-center p-6 text-center" data-delay={Math.min(i + 2, 6)}>
+                  <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-[14px] font-bold backdrop-blur-sm" style={`color: ${textColor};`}>
+                    {item.initials}
+                  </div>
+                  <p class="text-[0.9rem] italic leading-relaxed" style={`color: ${softColor};`}>&ldquo;{item.text}&rdquo;</p>
+                  <div class="mt-4">
+                    <div class="text-[13px] font-semibold" style={`color: ${textColor};`}>{item.name}</div>
+                    <div class="text-[11px]" style={`color: ${mutedColor};`}>{item.role}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div class="reveal mt-14 flex flex-col items-center justify-center gap-3 text-center sm:flex-row" data-delay="4">
+            {primaryCtaEnabled && (
+              <a href={primaryCtaUrl} class="btn btn-brand btn-lg group" style="border-radius: 8px;">
+                {primaryLabel}
+                <Icon name="arrow-right" size={16} class="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0.5" />
+              </a>
+            )}
+            {secondaryCtaEnabled && (
+              <a href={secondaryCtaUrl} class="btn btn-ghost btn-lg" style={`border-radius: 8px; color: ${textColor}; border-color: ${borderColor};`}>
+                {secondaryCta}
+              </a>
+            )}
+          </div>
+        </>
+      )
+    }
+  </div>
+</section>

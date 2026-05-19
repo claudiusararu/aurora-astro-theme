@@ -1,0 +1,95 @@
+---
+interface TeamMember {
+  name: string;
+  role: string;
+  photo?: { url: string; alt?: string } | null;
+}
+
+const defaultTeam: TeamMember[] = [
+  {
+    name: "Alex Morrison",
+    role: "Chief Executive Officer",
+    photo: { url: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=380&auto=format&fit=crop&q=80", alt: "Alex Morrison" },
+  },
+  {
+    name: "Sarah Chen",
+    role: "Head of Product",
+    photo: { url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=380&auto=format&fit=crop&q=80", alt: "Sarah Chen" },
+  },
+  {
+    name: "James Okoro",
+    role: "Lead Engineer",
+    photo: { url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=380&auto=format&fit=crop&q=80", alt: "James Okoro" },
+  },
+  {
+    name: "Elena Vasquez",
+    role: "Design Director",
+    photo: { url: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=380&auto=format&fit=crop&q=80", alt: "Elena Vasquez" },
+  },
+];
+
+const {
+  heading = "The people behind Aurora",
+  subheading = "A small, focused team building tools that help modern teams work better.",
+  memberItems = defaultTeam,
+} = Astro.props as {
+  heading?: string;
+  subheading?: string;
+  memberItems?: TeamMember[];
+};
+
+const team = memberItems.length ? memberItems : defaultTeam;
+---
+
+<section class="relative py-20 md:py-28">
+  <div class="container-content">
+    <div class="reveal mb-14 md:mb-18 max-w-2xl">
+      <h2
+        class="text-[1.8rem] md:text-[2.4rem] font-bold leading-[1.05] text-strong"
+        style="letter-spacing: -0.04em;"
+      >
+        {heading}
+      </h2>
+      <p class="mt-5 text-[1.05rem] text-soft max-w-[48ch]">
+        {subheading}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+      {
+        team.map((member, i) => (
+          <article
+            class="reveal"
+            data-delay={Math.min(i + 1, 6)}
+          >
+            <div
+              class="overflow-hidden bg-elevated"
+              style="border-radius: 12px; aspect-ratio: 300 / 380;"
+            >
+              <img
+                src={member.photo?.url ?? defaultTeam[i % defaultTeam.length]?.photo?.url}
+                alt={member.photo?.alt ?? member.name}
+                width="300"
+                height="380"
+                loading="lazy"
+                decoding="async"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="mt-4">
+              <h3
+                class="text-[1rem] font-semibold text-strong"
+                style="letter-spacing: -0.02em;"
+              >
+                {member.name}
+              </h3>
+              <p class="mt-1 text-[0.85rem] text-muted">
+                {member.role}
+              </p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

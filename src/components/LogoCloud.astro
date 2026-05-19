@@ -1,0 +1,71 @@
+---
+type LogoType = "text" | "images";
+type LogoImage = string | { url?: string; alt?: string } | null | undefined;
+
+interface Props {
+  eyebrow?: string;
+  logoType?: LogoType;
+  logos?: string;
+  logoImages?: LogoImage[];
+}
+
+const {
+  eyebrow = "Trusted by modern teams",
+  logoType = "text",
+  logos = "Stripe, Linear, Vercel, Notion, Figma, Raycast",
+  logoImages = [],
+} = Astro.props;
+
+function imageUrl(value: LogoImage) {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  return value.url ?? "";
+}
+
+function imageAlt(value: LogoImage) {
+  if (!value || typeof value === "string") return "";
+  return value.alt ?? "";
+}
+
+const textLogos = logos
+  .split(",")
+  .map((logo) => logo.trim())
+  .filter(Boolean);
+
+const imageLogos = logoImages
+  .map((logo) => ({ url: imageUrl(logo), alt: imageAlt(logo) }))
+  .filter((logo) => logo.url);
+---
+
+<section class="relative py-16 md:py-20">
+  <div class="container-content">
+    {eyebrow.trim() && (
+      <p class="reveal text-center text-[13px] font-medium text-muted tracking-wide uppercase mb-10">
+        {eyebrow}
+      </p>
+    )}
+
+    <div class="reveal flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-16 lg:gap-x-20" data-delay="1">
+      {logoType === "images" && imageLogos.length > 0 ? (
+        imageLogos.map((logo) => (
+          <img
+            src={logo.url}
+            alt={logo.alt}
+            class="max-h-10 w-auto max-w-[8.5rem] object-contain opacity-70 grayscale"
+            loading="lazy"
+            decoding="async"
+          />
+        ))
+      ) : (
+        textLogos.map((logo, index) => (
+          <span
+            class="text-[1.2rem] md:text-[1.4rem] tracking-[-0.03em] text-strong select-none"
+            style={`font-weight: ${[700, 600, 700, 500, 600, 700][index] ?? 600}; opacity: ${[0.35, 0.3, 0.4, 0.32, 0.38, 0.34][index] ?? 0.34};`}
+          >
+            {logo}
+          </span>
+        ))
+      )}
+    </div>
+  </div>
+</section>

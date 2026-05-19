@@ -1,0 +1,102 @@
+---
+import { siteConfig } from "~/config/site";
+
+const {
+  heading = siteConfig.newsletter?.heading ?? "Stay in the loop",
+  subheading = siteConfig.newsletter?.subtext ?? "Get product updates, engineering insights, and company news delivered to your inbox.",
+  placeholder = siteConfig.newsletter?.placeholder ?? "you@company.com",
+  buttonLabel = siteConfig.newsletter?.buttonLabel ?? "Subscribe",
+  note = "No spam. Unsubscribe anytime.",
+  layout = "card",
+} = Astro.props as {
+  heading?: string;
+  subheading?: string;
+  placeholder?: string;
+  buttonLabel?: string;
+  note?: string;
+  layout?: "card" | "plain" | string;
+};
+
+// ─── Form provider wiring ──────────────────────────────────
+// Reads siteConfig.newsletter.provider and matches the form
+// to the chosen ESP's expected request shape.
+//
+//   mailchimp  → input name="EMAIL"        (standard Mailchimp embed)
+//   convertkit → input name="email_address" (Kit / ConvertKit standard)
+//   buttondown → input name="email"        (Buttondown embed-subscribe)
+//
+// If no provider is configured, the form is rendered but disabled,
+// so theme buyers see the slot and know to wire it up.
+const n = siteConfig.newsletter as {
+  provider: "mailchimp" | "convertkit" | "buttondown" | null;
+  actionUrl?: string;
+};
+
+const emailInputName =
+  n.provider === "mailchimp"  ? "EMAIL"         :
+  n.provider === "convertkit" ? "email_address" :
+  n.provider === "buttondown" ? "email"         :
+  "email";
+
+const action = n.actionUrl;
+const disabled = !n.provider || !action;
+---
+
+<section class="relative py-20 md:py-28">
+  <div class="container-content">
+    <div
+      class:list={[layout === "card" && "aurora-gradient-bg-subtle", "py-16 md:py-20 px-6"]}
+      style={layout === "card" ? "border-radius: 12px;" : ""}
+    >
+      <div class="max-w-xl mx-auto text-center">
+        <h2
+          class="reveal text-[1.8rem] md:text-[2.4rem] font-bold leading-[1.05] text-strong"
+          style="letter-spacing: -0.04em;"
+        >
+          {heading}
+        </h2>
+        <p class="reveal mt-4 text-[1.05rem] text-soft max-w-[40ch] mx-auto" data-delay="1">
+          {subheading}
+        </p>
+
+        <form
+          class="reveal mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-md mx-auto"
+          data-delay="2"
+          method="POST"
+          action={action}
+          target="_blank"
+        >
+          <input
+            type="email"
+            name={emailInputName}
+            placeholder={placeholder}
+            required
+            disabled={disabled}
+            class="flex-1 px-4 py-3 bg-bg border border-line-soft text-strong text-[14px] placeholder:text-muted outline-none transition-colors duration-200 focus:border-strong disabled:opacity-60"
+            style="border-radius: 8px;"
+          />
+          <button
+            type="submit"
+            disabled={disabled}
+            class="btn btn-brand btn-lg shrink-0 disabled:opacity-60 disabled:cursor-not-allowed"
+            style="border-radius: 8px;"
+          >
+            {buttonLabel}
+          </button>
+        </form>
+
+        {disabled ? (
+          <p class="reveal mt-4 text-[12px] text-muted" data-delay="3">
+            Newsletter not configured yet. Set
+            <code class="text-[11px] px-1 py-0.5 rounded bg-elevated text-strong">siteConfig.newsletter.provider</code>
+            and
+            <code class="text-[11px] px-1 py-0.5 rounded bg-elevated text-strong">actionUrl</code>
+            in <code class="text-[11px] px-1 py-0.5 rounded bg-elevated text-strong">src/config/site.ts</code>.
+          </p>
+        ) : note ? (
+          <p class="reveal mt-4 text-[12px] text-muted" data-delay="3">{note}</p>
+        ) : null}
+      </div>
+    </div>
+  </div>
+</section>
