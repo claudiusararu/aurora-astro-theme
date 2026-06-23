@@ -1,5 +1,6 @@
 ---
 import Icon from "~/components/Icon.astro";
+import { siteConfig } from "~/config/site";
 
 interface TabItem {
   id?: string;
@@ -13,32 +14,10 @@ interface TabItem {
   } | null;
 }
 
-const defaultTabs: TabItem[] = [
-  {
-    id: "overview",
-    label: "Overview",
-    title: "Everything at a glance",
-    description: "Get a high-level view of your projects, team activity, and upcoming deadlines. Aurora surfaces what matters so you can focus on the work that moves the needle.",
-    features: ["Project summaries", "Activity feed", "Quick actions", "Priority inbox"],
-  },
-  {
-    id: "analytics",
-    label: "Analytics",
-    title: "Data-driven decisions",
-    description: "Track team velocity, project health, and resource allocation with dashboards that update in real time. Spot bottlenecks before they slow you down.",
-    features: ["Velocity charts", "Burndown reports", "Resource heatmaps", "Custom metrics"],
-  },
-  {
-    id: "automation",
-    label: "Automation",
-    title: "Work on autopilot",
-    description: "Set up rules that handle the repetitive stuff: status updates, assignments, notifications, and handoffs. Build workflows once, let them run forever.",
-    features: ["Rule builder", "Triggers & actions", "Templates library", "Webhook support"],
-  },
-];
+const defaultTabs = siteConfig.tabs.items as readonly TabItem[];
 
 const {
-  heading = "One platform, every capability",
+  heading = siteConfig.tabs.heading,
   tabItems = defaultTabs,
 } = Astro.props as {
   heading?: string;

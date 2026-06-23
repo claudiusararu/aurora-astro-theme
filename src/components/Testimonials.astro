@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from "~/config/site";
+
 type ImageAsset = string | { url?: string; alt?: string } | null | undefined;
 type TestimonialItem = {
   quote?: string;
@@ -13,26 +15,10 @@ interface Props {
   testimonialItems?: TestimonialItem[];
 }
 
-const defaultTestimonials: Required<Omit<TestimonialItem, "avatar">>[] = [
-  {
-    quote: "Aurora transformed how our team ships. We went from monthly releases to weekly, and the quality actually improved. It's the tool we didn't know we needed.",
-    name: "Sarah Chen",
-    role: "VP Engineering, Vertex Labs",
-  },
-  {
-    quote: "We evaluated everything on the market before choosing Aurora. The analytics alone justified the switch. Our team velocity is up 40% in three months.",
-    name: "Marcus Rivera",
-    role: "CTO, Pulse Health",
-  },
-  {
-    quote: "The onboarding experience is remarkable. We had 60 engineers productive on day one. No training sessions, no friction, just results from the start.",
-    name: "Emily Nakamura",
-    role: "Head of Product, Helix Finance",
-  },
-];
+const defaultTestimonials = siteConfig.testimonials.items;
 
 const {
-  heading = "Trusted by modern teams",
+  heading = siteConfig.testimonials.heading,
   quotes = "",
   testimonialItems,
 } = Astro.props;

@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from "~/config/site";
+
 interface GalleryItem {
   label: string;
   image?: { url: string; alt?: string } | null;
@@ -14,18 +16,11 @@ const gradients = [
   "linear-gradient(135deg, var(--aurora-lavender), var(--aurora-peach))",
 ];
 
-const defaultItems: GalleryItem[] = [
-  { label: "Dashboard" },
-  { label: "Analytics" },
-  { label: "Projects" },
-  { label: "Timeline" },
-  { label: "Reports" },
-  { label: "Settings" },
-];
+const defaultItems = siteConfig.gallery.items as readonly GalleryItem[];
 
 const {
-  heading = "Built for every workflow",
-  subheading = "A glimpse into the interfaces your team will use every day.",
+  heading = siteConfig.gallery.heading,
+  subheading = siteConfig.gallery.subheading,
   galleryItems = defaultItems,
 } = Astro.props as {
   heading?: string;

@@ -27,6 +27,106 @@ export const siteConfig = {
     },
   },
 
+  // ─── Hero ────────────────────────────────────────────
+  hero: {
+    eyebrow: "",
+    heading: "Optimize your workflow.\nAccelerate your growth.",
+    subheading: "The modern platform that helps teams move faster, stay organized, and deliver results without the complexity.",
+    primaryCta: "Start for free",
+    primaryCtaUrl: "#start",
+    secondaryCta: "Watch demo",
+    secondaryCtaUrl: "#demo",
+  },
+
+  // ─── Logo Cloud ──────────────────────────────────────
+  logoCloud: {
+    eyebrow: "Trusted by modern teams",
+    logos: "Stripe, Linear, Vercel, Notion, Figma, Raycast",
+  },
+
+  // ─── Features ────────────────────────────────────────
+  features: {
+    heading: "Feature management that fits your workflow",
+    items: [
+      { icon: "search", title: "Navigate your path with clarity", description: "Find what you need instantly. Smart search, contextual filters, and intelligent suggestions keep your team focused." },
+      { icon: "grid", title: "Organize your work efficiently", description: "Flexible project boards, nested tasks, and custom workflows adapt to how your team actually works." },
+      { icon: "globe", title: "Sync across all platforms", description: "Real-time sync on web, desktop, and mobile. Every change propagates instantly, no refresh required." },
+      { icon: "gauge", title: "Advanced analytics", description: "Understand your team's velocity, bottlenecks, and patterns with dashboards that surface insights automatically." },
+      { icon: "layers", title: "Team collaboration", description: "Threaded comments, live cursors, and shared workspaces. Work together without stepping on each other's toes." },
+      { icon: "clock", title: "Priority scheduling", description: "Automatic prioritization based on deadlines, dependencies, and team capacity. The right work, at the right time." },
+    ],
+  },
+
+  // ─── Image + Text ────────────────────────────────────
+  imageText: {
+    eyebrow: "INTELLIGENCE",
+    heading: "Feature intelligence built for modern product teams",
+    body: "Understand how features perform from the moment they ship. Track adoption curves, identify friction points, and measure real impact on your product metrics, all in one place.",
+    learnMoreLabel: "Learn more",
+    learnMoreUrl: "#learn",
+  },
+
+  // ─── Pricing ─────────────────────────────────────────
+  pricing: {
+    heading: "Power your progress with Pro Access",
+    subheading: "Choose the plan that works for your workflow. Scale up or down anytime.",
+    items: [
+      { title: "Individual Plan", subtitle: "Best option for solo designers or freelancers", price: "25", frequency: "month", ctaText: "Get Started", ctaUrl: "#start", benefits: ["Up to 5 projects", "10,000 events / month", "Basic analytics", "Email support", "1 team member", "30-day data retention", "Standard integrations", "Community access"], recommended: false },
+      { title: "Power Users & Teams", subtitle: "Best option for team agencies or corporates", price: "59", frequency: "month", ctaText: "Get Started", ctaUrl: "#start", benefits: ["Unlimited projects", "Unlimited events", "Advanced analytics & reports", "Priority support (4h SLA)", "Unlimited team members", "1-year data retention", "Custom integrations & API", "SSO & advanced security"], recommended: true },
+    ],
+  },
+
+  // ─── Testimonials ────────────────────────────────────
+  testimonials: {
+    heading: "Trusted by modern teams",
+    items: [
+      { quote: "Aurora transformed how our team ships. We went from monthly releases to weekly, and the quality actually improved. It's the tool we didn't know we needed.", name: "Sarah Chen", role: "VP Engineering, Vertex Labs" },
+      { quote: "We evaluated everything on the market before choosing Aurora. The analytics alone justified the switch. Our team velocity is up 40% in three months.", name: "Marcus Rivera", role: "CTO, Pulse Health" },
+      { quote: "The onboarding experience is remarkable. We had 60 engineers productive on day one. No training sessions, no friction, just results from the start.", name: "Emily Nakamura", role: "Head of Product, Helix Finance" },
+    ],
+  },
+
+  // ─── FAQ ─────────────────────────────────────────────
+  faq: {
+    heading: "Frequently asked questions",
+    items: [
+      { question: "How does the free trial work?", answer: "Sign up with your email and start using Aurora immediately. No credit card required. Your 14-day trial includes full access to every Pro feature, and you can downgrade at any time." },
+      { question: "Can I switch plans later?", answer: "Absolutely. Upgrade or downgrade anytime from your billing settings. When upgrading, you'll be prorated for the remaining time. When downgrading, you keep Pro features until the end of your current billing cycle." },
+      { question: "What happens to my data if I cancel?", answer: "You own your data, always. Export everything, including projects, analytics history, team settings, and integrations, as JSON or CSV with one click. After cancellation, your data is retained for 30 days before deletion." },
+      { question: "Do you offer discounts for startups?", answer: "Yes. We offer 50% off the first year for startups with fewer than 20 employees and under $5M in funding. Apply through our startup program page with your company details." },
+      { question: "What security certifications do you have?", answer: "Aurora is SOC 2 Type II certified, GDPR compliant, and HIPAA ready on Team plans. We undergo annual penetration testing and continuous vulnerability scanning. All data is encrypted at rest and in transit." },
+      { question: "How does team billing work?", answer: "Team plans are billed per workspace, not per seat. Add unlimited team members to your workspace at no extra cost. Each workspace gets its own billing cycle and can be managed independently." },
+    ],
+    contactHeading: "Still have questions?",
+    contactDescription: "Can't find the answer you're looking for? Our team is here to help. Reach out and we'll get back to you within 24 hours.",
+    contactEmail: "support@aurora.io",
+    responseTime: "Within 24 hours",
+    contactUrl: "#contact",
+  },
+
+  // ─── Stats ───────────────────────────────────────────
+  stats: {
+    items: [
+      { value: "10K+", label: "Active Users" },
+      { value: "99.9%", label: "Uptime" },
+      { value: "2.4s", label: "Avg. Response" },
+      { value: "150+", label: "Integrations" },
+    ],
+  },
+
+  // ─── CTA ─────────────────────────────────────────────
+  cta: {
+    eyebrow: "",
+    heading: "Why teams are leaving Monday for Aurora",
+    subheading: "Join thousands of teams who made the switch and never looked back.",
+    buttonLabel: "Start for free",
+    socialProof: [
+      { text: "Switched from Monday in a weekend. Never looked back.", name: "David Park", role: "Engineering Lead", initials: "DP" },
+      { text: "Aurora is what we wished Notion was for project management.", name: "Lisa Moreau", role: "Product Director", initials: "LM" },
+      { text: "Our team's productivity metrics speak for themselves. Up 60%.", name: "James Okafor", role: "VP Operations", initials: "JO" },
+    ],
+  },
+
   // ─── Contact Form ────────────────────────────────────
   // Supported providers: "formspree" | "formsubmit" | "netlify"
   // Set to null to disable contact form
@@ -119,66 +219,70 @@ export const siteConfig = {
 
   // ─── Team ────────────────────────────────────────────
   team: {
-    heading: "Meet our team",
-    subtext: "The people building the future of project management.",
+    heading: "The people behind Aurora",
+    subheading: "A small, focused team building tools that help modern teams work better.",
     members: [
-      { name: "Alex Rivera", role: "CEO & Co-founder", initials: "AR", image: "/team/alex.jpg", bio: "Previously VP Engineering at Stripe. 12 years building developer tools." },
-      { name: "Sarah Kim", role: "CTO & Co-founder", initials: "SK", image: "/team/sarah.jpg", bio: "Former tech lead at Vercel. Passionate about developer experience." },
-      { name: "Marcus Chen", role: "Head of Design", initials: "MC", image: "/team/marcus.jpg", bio: "Design systems expert. Previously at Figma and Linear." },
-      { name: "Elena Vasquez", role: "Head of Product", initials: "EV", image: "/team/elena.jpg", bio: "Product leader with experience at Notion and Asana." },
+      { name: "Alex Morrison", role: "Chief Executive Officer", photo: { url: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=380&auto=format&fit=crop&q=80", alt: "Alex Morrison" } },
+      { name: "Sarah Chen", role: "Head of Product", photo: { url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=380&auto=format&fit=crop&q=80", alt: "Sarah Chen" } },
+      { name: "James Okoro", role: "Lead Engineer", photo: { url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=380&auto=format&fit=crop&q=80", alt: "James Okoro" } },
+      { name: "Elena Vasquez", role: "Design Director", photo: { url: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=380&auto=format&fit=crop&q=80", alt: "Elena Vasquez" } },
     ],
   },
 
   // ─── Video ───────────────────────────────────────────
   video: {
     heading: "See Aurora in action",
-    subtext: "Watch how teams use Aurora to ship faster and stay organized.",
-    provider: "youtube" as "youtube" | "vimeo",
-    videoId: "dQw4w9WgXcQ",
+    subheading: "A two-minute walkthrough of the features that help teams ship faster.",
+    provider: "youtube" as "youtube" | "vimeo" | "custom",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
   },
 
   // ─── Timeline ────────────────────────────────────────
   timeline: {
     heading: "Our journey",
-    subtext: "Key milestones that shaped who we are today.",
+    subheading: "From a two-person team to powering thousands of workflows.",
     items: [
-      { year: "2023", title: "Founded", description: "Started with a simple idea: project management shouldn't be painful." },
-      { year: "2023", title: "Seed Round", description: "Raised $4M to build the core platform and hire the founding team." },
-      { year: "2024", title: "Public Beta", description: "Launched to 2,000 beta users. Feedback shaped every feature." },
-      { year: "2024", title: "Series A", description: "Raised $18M led by Sequoia. Expanded to 30 team members." },
-      { year: "2025", title: "10K Teams", description: "Crossed 10,000 active teams. Launched enterprise features." },
-      { year: "2026", title: "Global Scale", description: "Operating in 40+ countries with 99.99% uptime." },
+      { year: "2021", title: "The beginning", description: "Founded with a simple idea: project management should feel invisible. Two engineers, one apartment, zero funding." },
+      { year: "2022", title: "First 1,000 users", description: "Launched the public beta. Word spread through engineering communities. Reached product-market fit within six months." },
+      { year: "2023", title: "Series A", description: "Raised $12M to scale the platform. Expanded the team to 25. Shipped real-time collaboration and API access." },
+      { year: "2024", title: "Enterprise ready", description: "SOC 2 certified. SSO, audit logs, and advanced permissions. Serving teams from 5 to 5,000 members." },
     ],
   },
 
   // ─── Comparison ──────────────────────────────────────
   comparison: {
-    heading: "How Aurora compares",
-    subtext: "See why teams choose Aurora over the competition.",
-    features: [
-      { name: "Real-time collaboration", aurora: true, competitorA: true, competitorB: false },
-      { name: "Built-in analytics", aurora: true, competitorA: false, competitorB: false },
-      { name: "Custom workflows", aurora: true, competitorA: true, competitorB: true },
-      { name: "API access", aurora: true, competitorA: true, competitorB: false },
-      { name: "Priority support", aurora: true, competitorA: false, competitorB: false },
-      { name: "Unlimited projects", aurora: true, competitorA: false, competitorB: true },
-      { name: "SSO & SAML", aurora: true, competitorA: true, competitorB: false },
-      { name: "Mobile app", aurora: true, competitorA: true, competitorB: true },
+    heading: "Compare plans",
+    subheading: "Find the right fit for your team. Every plan includes a 14-day free trial.",
+    starterLabel: "Starter",
+    proLabel: "Pro",
+    enterpriseLabel: "Enterprise",
+    rows: [
+      { feature: "Projects", starter: "5", pro: "Unlimited", enterprise: "Unlimited" },
+      { feature: "Team members", starter: "3", pro: "Unlimited", enterprise: "Unlimited" },
+      { feature: "Storage", starter: "1 GB", pro: "50 GB", enterprise: "Unlimited" },
+      { feature: "Analytics", starter: "-", pro: "✓", enterprise: "✓" },
+      { feature: "Custom workflows", starter: "-", pro: "✓", enterprise: "✓" },
+      { feature: "API access", starter: "-", pro: "✓", enterprise: "✓" },
+      { feature: "SSO / SAML", starter: "-", pro: "-", enterprise: "✓" },
+      { feature: "Dedicated support", starter: "-", pro: "-", enterprise: "✓" },
     ],
-    columns: ["Aurora", "Competitor A", "Competitor B"],
+    buttonLabel: "Start free trial",
+    buttonUrl: "#start",
+    secondaryButtonLabel: "Talk to sales",
+    secondaryButtonUrl: "#contact",
   },
 
   // ─── Gallery ─────────────────────────────────────────
   gallery: {
     heading: "Built for every workflow",
-    subtext: "See Aurora in action across different teams and use cases.",
-    images: [
-      { src: "/gallery/1.jpg", alt: "Dashboard overview" },
-      { src: "/gallery/2.jpg", alt: "Team collaboration" },
-      { src: "/gallery/3.jpg", alt: "Analytics view" },
-      { src: "/gallery/4.jpg", alt: "Project timeline" },
-      { src: "/gallery/5.jpg", alt: "Mobile interface" },
-      { src: "/gallery/6.jpg", alt: "Integration panel" },
+    subheading: "A glimpse into the interfaces your team will use every day.",
+    items: [
+      { label: "Dashboard" },
+      { label: "Analytics" },
+      { label: "Projects" },
+      { label: "Timeline" },
+      { label: "Reports" },
+      { label: "Settings" },
     ],
   },
 
@@ -217,32 +321,113 @@ export const siteConfig = {
 
   // ─── Tabs ────────────────────────────────────────────
   tabs: {
-    heading: "One platform, every workflow",
-    subtext: "Aurora adapts to how your team works.",
+    heading: "One platform, every capability",
     items: [
-      { label: "Projects", title: "Manage projects with clarity", description: "Kanban boards, Gantt charts, and list views. Switch between views instantly. Every project gets its own workspace with customizable stages.", icon: "grid" },
-      { label: "Analytics", title: "Insights that drive decisions", description: "Track velocity, bottlenecks, and team capacity. Dashboards update in real-time. Export reports for stakeholders with one click.", icon: "gauge" },
-      { label: "Automation", title: "Automate the repetitive", description: "Set triggers for status changes, assignments, and notifications. Build workflows without code. Reclaim hours every week.", icon: "bolt" },
-      { label: "Integrations", title: "Connect your stack", description: "Slack, GitHub, Figma, Jira — 150+ integrations. Two-way sync keeps everything up to date. Custom webhooks for anything else.", icon: "globe" },
+      { id: "overview", label: "Overview", title: "Everything at a glance", description: "Get a high-level view of your projects, team activity, and upcoming deadlines. Aurora surfaces what matters so you can focus on the work that moves the needle.", features: ["Project summaries", "Activity feed", "Quick actions", "Priority inbox"] },
+      { id: "analytics", label: "Analytics", title: "Data-driven decisions", description: "Track team velocity, project health, and resource allocation with dashboards that update in real time. Spot bottlenecks before they slow you down.", features: ["Velocity charts", "Burndown reports", "Resource heatmaps", "Custom metrics"] },
+      { id: "automation", label: "Automation", title: "Work on autopilot", description: "Set up rules that handle the repetitive stuff: status updates, assignments, notifications, and handoffs. Build workflows once, let them run forever.", features: ["Rule builder", "Triggers & actions", "Templates library", "Webhook support"] },
     ],
   },
 
   // ─── App Download ────────────────────────────────────
   appDownload: {
     heading: "Take Aurora everywhere",
-    subtext: "Available on iOS, Android, and desktop. Sync across all your devices.",
-    appStoreUrl: "https://apps.apple.com",
-    playStoreUrl: "https://play.google.com",
+    subheading: "Stay on top of your projects from anywhere. Native apps for iOS and Android with full offline support.",
+    appStoreUrl: "#app-store",
+    googlePlayUrl: "#google-play",
+    note: "Requires iOS 16+ or Android 12+. Free to download.",
   },
 
   // ─── Map ─────────────────────────────────────────────
   map: {
-    heading: "Visit our office",
-    subtext: "We'd love to meet you in person.",
-    embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937595!2d2.292292615509614!3d48.85837360866272!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sEiffel%20Tower!5e0!3m2!1sen!2sfr!4v1234567890",
-    address: "123 Innovation Drive, San Francisco, CA 94107",
-    phone: "+1 (555) 123-4567",
-    email: "hello@aurora.app",
+    heading: "Our offices",
+    subheading: "Three offices across three continents. Visit us or get in touch.",
+    // Map mode: "auto" derives an embed from the first location, "embed" uses mapEmbedUrl, "placeholder" shows a styled placeholder
+    mapMode: "auto" as "auto" | "embed" | "placeholder",
+    mapEmbedUrl: "",
+    mapLabel: "Interactive map",
+    locations: [
+      { city: "San Francisco", address: "123 Innovation Drive, CA 94107", phone: "+1 (555) 123-4567", email: "sf@aurora.io" },
+      { city: "London", address: "45 Tech Lane, EC2A 1NT", phone: "+44 20 7946 0958", email: "london@aurora.io" },
+      { city: "Tokyo", address: "8-1 Shibuya, 150-0002", phone: "+81 3-1234-5678", email: "tokyo@aurora.io" },
+    ],
+  },
+
+  // ─── Page Headers ────────────────────────────────────
+  // Hero (eyebrow + title + subtitle) at the top of each inner page.
+  pageHeaders: {
+    about: {
+      eyebrow: "SAAS STARTER",
+      title: "About Aurora",
+      subtitle: "Aurora is designed as a complete starter website, not just a landing page.",
+    },
+    contact: {
+      eyebrow: "SAAS STARTER",
+      title: "Contact",
+      subtitle: "Get in touch with the Aurora team.",
+    },
+    customers: {
+      eyebrow: "SAAS STARTER",
+      title: "Customers",
+      subtitle: "Trust signals, proof, stories, and customer-facing conversion sections.",
+    },
+    features: {
+      eyebrow: "SAAS STARTER",
+      title: "Features",
+      subtitle: "All the pieces your SaaS needs to explain, convert, and support users.",
+    },
+    pricing: {
+      eyebrow: "SAAS STARTER",
+      title: "Pricing",
+      subtitle: "Simple plans, comparison tables, and conversion-ready questions.",
+    },
+    resources: {
+      eyebrow: "SAAS STARTER",
+      title: "Resources",
+      subtitle: "A starter resource hub for posts, updates, newsletter growth, and FAQs.",
+    },
+    privacy: {
+      eyebrow: "SAAS STARTER",
+      title: "Privacy Policy",
+      subtitle: "Read the Aurora privacy policy.",
+    },
+    terms: {
+      eyebrow: "SAAS STARTER",
+      title: "Terms of Service",
+      subtitle: "Read the Aurora terms of service.",
+    },
+  },
+
+  // ─── Resource Hub ────────────────────────────────────
+  resourceHub: {
+    eyebrow: "resource hub",
+    heading: "Start faster with Aurora",
+    subheading: "Guides, templates, and operating notes for teams building calmer project systems.",
+    cards: [
+      { title: "Quick-start guide", description: "Set up your first workspace, invite teammates, and create a repeatable project rhythm." },
+      { title: "Workflow checklist", description: "A practical checklist for planning boards, statuses, roles, and launch routines." },
+      { title: "Template library", description: "Reusable docs for sprint planning, status updates, and async handoffs." },
+    ],
+  },
+
+  // ─── Blog Hero ───────────────────────────────────────
+  // Default featured-post card shown in the section library. On the blog index
+  // the featured post is sourced from your latest published post automatically.
+  blogHero: {
+    title: "Design Team Rituals That Actually Work (Even Remotely)",
+    category: "Design",
+    date: "May 6, 2026",
+    author: "Sarah Rodriguez",
+    authorInitials: "SR",
+    slug: "getting-started",
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=900&auto=format&fit=crop&q=85",
+    imageAlt: "",
+  },
+
+  // ─── Blog ────────────────────────────────────────────
+  blog: {
+    // Shown in place of the post grid when there are no published posts yet.
+    emptyState: "No posts yet. Check back soon.",
   },
 
   // ─── Head Scripts ────────────────────────────────────

@@ -1,5 +1,6 @@
 ---
 import Icon from "~/components/Icon.astro";
+import { siteConfig } from "~/config/site";
 
 type LayoutType = "centered" | "split-image" | "banner-compact";
 type BackgroundMode = "default" | "color" | "image";
@@ -35,31 +36,12 @@ interface Props {
   buttonLabel?: string;
 }
 
-const defaultSocialProofItems = [
-  {
-    text: "Switched from Monday in a weekend. Never looked back.",
-    name: "David Park",
-    role: "Engineering Lead",
-    initials: "DP",
-  },
-  {
-    text: "Aurora is what we wished Notion was for project management.",
-    name: "Lisa Moreau",
-    role: "Product Director",
-    initials: "LM",
-  },
-  {
-    text: "Our team's productivity metrics speak for themselves. Up 60%.",
-    name: "James Okafor",
-    role: "VP Operations",
-    initials: "JO",
-  },
-];
+const defaultSocialProofItems = siteConfig.cta.socialProof;
 
 const {
-  eyebrow = "",
-  heading = "Why teams are leaving Monday for Aurora",
-  subheading = "Join thousands of teams who made the switch and never looked back.",
+  eyebrow = siteConfig.cta.eyebrow,
+  heading = siteConfig.cta.heading,
+  subheading = siteConfig.cta.subheading,
   layoutType = "centered",
   spacing = "normal",
   backgroundMode = "default",
@@ -76,7 +58,7 @@ const {
   secondaryCtaEnabled = false,
   secondaryCta = "Learn more",
   secondaryCtaUrl = "#learn-more",
-  buttonLabel = "Start for free",
+  buttonLabel = siteConfig.cta.buttonLabel,
 } = Astro.props;
 
 function imageUrl(value: ImageAsset) {

@@ -1,5 +1,6 @@
 ---
 import Icon from "~/components/Icon.astro";
+import { siteConfig } from "~/config/site";
 
 interface LocationItem {
   city: string;
@@ -8,33 +9,14 @@ interface LocationItem {
   email: string;
 }
 
-const defaultLocations: LocationItem[] = [
-  {
-    city: "San Francisco",
-    address: "123 Innovation Drive, CA 94107",
-    phone: "+1 (555) 123-4567",
-    email: "sf@aurora.io",
-  },
-  {
-    city: "London",
-    address: "45 Tech Lane, EC2A 1NT",
-    phone: "+44 20 7946 0958",
-    email: "london@aurora.io",
-  },
-  {
-    city: "Tokyo",
-    address: "8-1 Shibuya, 150-0002",
-    phone: "+81 3-1234-5678",
-    email: "tokyo@aurora.io",
-  },
-];
+const defaultLocations = siteConfig.map.locations as readonly LocationItem[];
 
 const {
-  heading = "Our offices",
-  subheading = "Three offices across three continents. Visit us or get in touch.",
-  mapMode = "auto",
-  mapEmbedUrl = "",
-  mapLabel = "Interactive map",
+  heading = siteConfig.map.heading,
+  subheading = siteConfig.map.subheading,
+  mapMode = siteConfig.map.mapMode,
+  mapEmbedUrl = siteConfig.map.mapEmbedUrl,
+  mapLabel = siteConfig.map.mapLabel,
   locationItems = defaultLocations,
 } = Astro.props as {
   heading?: string;
@@ -61,7 +43,7 @@ function normalizeMapEmbedUrl(url: string) {
   }
 }
 
-function autoMapUrl(items: LocationItem[]) {
+function autoMapUrl(items: readonly LocationItem[]) {
   const first = items[0];
   const query = [first?.city, first?.address].filter(Boolean).join(", ").trim();
   return query ? `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed` : "";

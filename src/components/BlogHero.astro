@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from "~/config/site";
+
 interface Props {
   title?: string;
   category?: string;
@@ -11,14 +13,14 @@ interface Props {
 }
 
 const {
-  title = "Design Team Rituals That Actually Work (Even Remotely)",
-  category = "Design",
-  date = "May 6, 2026",
-  author = "Sarah Rodriguez",
-  authorInitials = "SR",
-  slug = "getting-started",
-  image = "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=900&auto=format&fit=crop&q=85",
-  imageAlt = "",
+  title = siteConfig.blogHero.title,
+  category = siteConfig.blogHero.category,
+  date = siteConfig.blogHero.date,
+  author = siteConfig.blogHero.author,
+  authorInitials = siteConfig.blogHero.authorInitials,
+  slug = siteConfig.blogHero.slug,
+  image = siteConfig.blogHero.image,
+  imageAlt = siteConfig.blogHero.imageAlt,
 } = Astro.props;
 ---
 

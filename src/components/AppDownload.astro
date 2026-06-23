@@ -1,10 +1,12 @@
 ---
+import { siteConfig } from "~/config/site";
+
 const {
-  heading = "Take Aurora everywhere",
-  subheading = "Stay on top of your projects from anywhere. Native apps for iOS and Android with full offline support.",
-  appStoreUrl = "#app-store",
-  googlePlayUrl = "#google-play",
-  note = "Requires iOS 16+ or Android 12+. Free to download.",
+  heading = siteConfig.appDownload.heading,
+  subheading = siteConfig.appDownload.subheading,
+  appStoreUrl = siteConfig.appDownload.appStoreUrl,
+  googlePlayUrl = siteConfig.appDownload.googlePlayUrl,
+  note = siteConfig.appDownload.note,
   visualType = "phone",
   image = null,
 } = Astro.props as {

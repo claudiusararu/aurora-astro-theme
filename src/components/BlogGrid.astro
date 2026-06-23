@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from "~/config/site";
+
 interface Props {
   posts: Array<{
     id: string;
@@ -26,7 +28,9 @@ function formatDate(date: Date): string {
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   {
-    posts.map((post, i) => (
+    posts.length === 0
+    ? <p class="text-[0.95rem] text-soft">{siteConfig.blog.emptyState}</p>
+    : posts.map((post, i) => (
       <a
         href={`/blog/${post.id.replace(/\.md$/, "")}/`}
         class="reveal group bg-bg border border-line-soft rounded-xl overflow-hidden hover:shadow-soft transition-all duration-300"

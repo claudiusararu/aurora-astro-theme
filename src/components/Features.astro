@@ -1,5 +1,6 @@
 ---
 import Icon from "~/components/Icon.astro";
+import { siteConfig } from "~/config/site";
 
 type FeatureIconName =
   | "search"
@@ -43,41 +44,10 @@ const iconNames: FeatureIconName[] = [
   "send",
 ];
 
-const defaultFeatures: Required<FeatureItem>[] = [
-  {
-    icon: "search",
-    title: "Navigate your path with clarity",
-    description: "Find what you need instantly. Smart search, contextual filters, and intelligent suggestions keep your team focused.",
-  },
-  {
-    icon: "grid",
-    title: "Organize your work efficiently",
-    description: "Flexible project boards, nested tasks, and custom workflows adapt to how your team actually works.",
-  },
-  {
-    icon: "globe",
-    title: "Sync across all platforms",
-    description: "Real-time sync on web, desktop, and mobile. Every change propagates instantly, no refresh required.",
-  },
-  {
-    icon: "gauge",
-    title: "Advanced analytics",
-    description: "Understand your team's velocity, bottlenecks, and patterns with dashboards that surface insights automatically.",
-  },
-  {
-    icon: "layers",
-    title: "Team collaboration",
-    description: "Threaded comments, live cursors, and shared workspaces. Work together without stepping on each other's toes.",
-  },
-  {
-    icon: "clock",
-    title: "Priority scheduling",
-    description: "Automatic prioritization based on deadlines, dependencies, and team capacity. The right work, at the right time.",
-  },
-];
+const defaultFeatures = siteConfig.features.items;
 
 const {
-  heading = "Feature management that fits your workflow",
+  heading = siteConfig.features.heading,
   items = "",
   featureItems,
   sectionId = "features",

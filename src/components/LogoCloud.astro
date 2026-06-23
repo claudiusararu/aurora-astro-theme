@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from "~/config/site";
+
 type LogoType = "text" | "images";
 type LogoImage = string | { url?: string; alt?: string } | null | undefined;
 
@@ -10,9 +12,9 @@ interface Props {
 }
 
 const {
-  eyebrow = "Trusted by modern teams",
+  eyebrow = siteConfig.logoCloud.eyebrow,
   logoType = "text",
-  logos = "Stripe, Linear, Vercel, Notion, Figma, Raycast",
+  logos = siteConfig.logoCloud.logos,
   logoImages = [],
 } = Astro.props;
 

@@ -1,5 +1,6 @@
 ---
 import "@splidejs/splide/css/core";
+import { siteConfig } from "~/config/site";
 
 type LayoutType = "two-up" | "single-focus" | "three-up-compact";
 type ImageRatio = "16:9" | "4:3" | "1:1" | "portrait";
@@ -27,49 +28,12 @@ interface Props {
   slides?: string;
 }
 
-const defaultSlides = [
-  {
-    image: {
-      url: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=800&auto=format&fit=crop&q=85",
-      alt: "Team planning workspace",
-    },
-    title: "Planning workspace",
-    description: "A calm overview for launches, campaigns, and ongoing product work.",
-    alt: "Team planning workspace",
-  },
-  {
-    image: {
-      url: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200&h=800&auto=format&fit=crop&q=85",
-      alt: "Modern collaborative office",
-    },
-    title: "Modern team room",
-    description: "Bring product, design, and operations into one shared space.",
-    alt: "Modern collaborative office",
-  },
-  {
-    image: {
-      url: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&h=800&auto=format&fit=crop&q=85",
-      alt: "People collaborating around laptops",
-    },
-    title: "Live collaboration",
-    description: "Keep context, ownership, and decisions visible as work moves.",
-    alt: "People collaborating around laptops",
-  },
-  {
-    image: {
-      url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=800&auto=format&fit=crop&q=85",
-      alt: "Laptop showing analytics work",
-    },
-    title: "Analytics dashboard",
-    description: "Track progress with a visual system your team can understand quickly.",
-    alt: "Laptop showing analytics work",
-  },
-];
+const defaultSlides = siteConfig.carousel.slides as readonly SlideItem[];
 
 const {
-  eyebrow = "Carousel",
-  heading = "A closer look at Aurora",
-  subheading = "Showcase product screens, customer stories, launches, offices, or any image-led moment.",
+  eyebrow = siteConfig.carousel.eyebrow,
+  heading = siteConfig.carousel.heading,
+  subheading = siteConfig.carousel.subtext,
   layout = "two-up",
   imageRatio = "16:9",
   autoplay = false,

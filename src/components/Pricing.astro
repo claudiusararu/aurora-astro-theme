@@ -1,5 +1,6 @@
 ---
 import Icon from "~/components/Icon.astro";
+import { siteConfig } from "~/config/site";
 
 type PricingFrequency = "month" | "year" | "onetime";
 type PricingItem = {
@@ -20,50 +21,11 @@ interface Props {
   pricingItems?: PricingItem[];
 }
 
-const defaultPricingItems: Required<PricingItem>[] = [
-  {
-    title: "Individual Plan",
-    subtitle: "Best option for solo designers or freelancers",
-    price: "25",
-    frequency: "month",
-    ctaText: "Get Started",
-    ctaUrl: "#start",
-    benefits: [
-      "Up to 5 projects",
-      "10,000 events / month",
-      "Basic analytics",
-      "Email support",
-      "1 team member",
-      "30-day data retention",
-      "Standard integrations",
-      "Community access",
-    ],
-    recommended: false,
-  },
-  {
-    title: "Power Users & Teams",
-    subtitle: "Best option for team agencies or corporates",
-    price: "59",
-    frequency: "month",
-    ctaText: "Get Started",
-    ctaUrl: "#start",
-    benefits: [
-      "Unlimited projects",
-      "Unlimited events",
-      "Advanced analytics & reports",
-      "Priority support (4h SLA)",
-      "Unlimited team members",
-      "1-year data retention",
-      "Custom integrations & API",
-      "SSO & advanced security",
-    ],
-    recommended: true,
-  },
-];
+const defaultPricingItems = siteConfig.pricing.items;
 
 const {
-  heading = "Power your progress with Pro Access",
-  subheading = "Choose the plan that works for your workflow. Scale up or down anytime.",
+  heading = siteConfig.pricing.heading,
+  subheading = siteConfig.pricing.subheading,
   plans = "",
   pricingItems,
 } = Astro.props;

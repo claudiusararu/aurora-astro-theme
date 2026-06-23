@@ -1,5 +1,6 @@
 ---
 import Icon from "~/components/Icon.astro";
+import { siteConfig } from "~/config/site";
 
 type FaqItem = {
   question?: string;
@@ -20,49 +21,18 @@ interface Props {
   contactUrl?: string;
 }
 
-const defaultFaqs = [
-  {
-    question: "How does the free trial work?",
-    answer:
-      "Sign up with your email and start using Aurora immediately. No credit card required. Your 14-day trial includes full access to every Pro feature, and you can downgrade at any time.",
-  },
-  {
-    question: "Can I switch plans later?",
-    answer:
-      "Absolutely. Upgrade or downgrade anytime from your billing settings. When upgrading, you'll be prorated for the remaining time. When downgrading, you keep Pro features until the end of your current billing cycle.",
-  },
-  {
-    question: "What happens to my data if I cancel?",
-    answer:
-      "You own your data, always. Export everything, including projects, analytics history, team settings, and integrations, as JSON or CSV with one click. After cancellation, your data is retained for 30 days before deletion.",
-  },
-  {
-    question: "Do you offer discounts for startups?",
-    answer:
-      "Yes. We offer 50% off the first year for startups with fewer than 20 employees and under $5M in funding. Apply through our startup program page with your company details.",
-  },
-  {
-    question: "What security certifications do you have?",
-    answer:
-      "Aurora is SOC 2 Type II certified, GDPR compliant, and HIPAA ready on Team plans. We undergo annual penetration testing and continuous vulnerability scanning. All data is encrypted at rest and in transit.",
-  },
-  {
-    question: "How does team billing work?",
-    answer:
-      "Team plans are billed per workspace, not per seat. Add unlimited team members to your workspace at no extra cost. Each workspace gets its own billing cycle and can be managed independently.",
-  },
-];
+const defaultFaqs = siteConfig.faq.items;
 
 const {
-  heading = "Frequently asked questions",
+  heading = siteConfig.faq.heading,
   items = "",
   faqItems = [],
   contactEnabled = true,
-  contactHeading = "Still have questions?",
-  contactDescription = "Can't find the answer you're looking for? Our team is here to help. Reach out and we'll get back to you within 24 hours.",
-  contactEmail = "support@aurora.io",
-  responseTime = "Within 24 hours",
-  contactUrl = "#contact",
+  contactHeading = siteConfig.faq.contactHeading,
+  contactDescription = siteConfig.faq.contactDescription,
+  contactEmail = siteConfig.faq.contactEmail,
+  responseTime = siteConfig.faq.responseTime,
+  contactUrl = siteConfig.faq.contactUrl,
 } = Astro.props;
 
 const structuredFaqs = faqItems

@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from "~/config/site";
+
 type StatItem = {
   value?: string;
   label?: string;
@@ -9,12 +11,7 @@ interface Props {
   items?: string;
 }
 
-const defaultStats = [
-  { value: "10K+", label: "Active Users" },
-  { value: "99.9%", label: "Uptime" },
-  { value: "2.4s", label: "Avg. Response" },
-  { value: "150+", label: "Integrations" },
-];
+const defaultStats = siteConfig.stats.items;
 
 const {
   statItems = [],

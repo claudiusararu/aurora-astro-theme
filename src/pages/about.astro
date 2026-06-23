@@ -1,5 +1,6 @@
 ---
 import Layout from "~/layouts/Layout.astro";
+import { siteConfig } from "~/config/site";
 import Header from "~/components/Header.astro";
 import Footer from "~/components/Footer.astro";
 import Stats from "~/components/Stats.astro";
@@ -14,9 +15,9 @@ import CTA from "~/components/CTA.astro";
   <main id="main">
     <section class="relative overflow-hidden border-b border-line-soft">
       <div class="container-content py-24 md:py-32 text-center">
-        <p class="reveal text-eyebrow mb-4">SAAS STARTER</p>
-        <h1 class="reveal text-display-sm md:text-display max-w-[18ch] mx-auto" style="letter-spacing: -0.04em;">About Aurora</h1>
-        <p class="reveal mt-6 text-[1.05rem] md:text-[1.2rem] leading-relaxed text-soft max-w-[54ch] mx-auto" data-delay="1">Aurora is designed as a complete starter website, not just a landing page.</p>
+        <p class="reveal text-eyebrow mb-4">{siteConfig.pageHeaders.about.eyebrow}</p>
+        <h1 class="reveal text-display-sm md:text-display max-w-[18ch] mx-auto" style="letter-spacing: -0.04em;">{siteConfig.pageHeaders.about.title}</h1>
+        <p class="reveal mt-6 text-[1.05rem] md:text-[1.2rem] leading-relaxed text-soft max-w-[54ch] mx-auto" data-delay="1">{siteConfig.pageHeaders.about.subtitle}</p>
       </div>
     </section>
     <Stats />

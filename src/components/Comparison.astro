@@ -1,5 +1,6 @@
 ---
 import Icon from "~/components/Icon.astro";
+import { siteConfig } from "~/config/site";
 
 interface ComparisonRow {
   feature: string;
@@ -8,28 +9,19 @@ interface ComparisonRow {
   enterprise: string;
 }
 
-const defaultRows: ComparisonRow[] = [
-  { feature: "Projects", starter: "5", pro: "Unlimited", enterprise: "Unlimited" },
-  { feature: "Team members", starter: "3", pro: "Unlimited", enterprise: "Unlimited" },
-  { feature: "Storage", starter: "1 GB", pro: "50 GB", enterprise: "Unlimited" },
-  { feature: "Analytics", starter: "-", pro: "✓", enterprise: "✓" },
-  { feature: "Custom workflows", starter: "-", pro: "✓", enterprise: "✓" },
-  { feature: "API access", starter: "-", pro: "✓", enterprise: "✓" },
-  { feature: "SSO / SAML", starter: "-", pro: "-", enterprise: "✓" },
-  { feature: "Dedicated support", starter: "-", pro: "-", enterprise: "✓" },
-];
+const defaultRows = siteConfig.comparison.rows as readonly ComparisonRow[];
 
 const {
-  heading = "Compare plans",
-  subheading = "Find the right fit for your team. Every plan includes a 14-day free trial.",
-  starterLabel = "Starter",
-  proLabel = "Pro",
-  enterpriseLabel = "Enterprise",
+  heading = siteConfig.comparison.heading,
+  subheading = siteConfig.comparison.subheading,
+  starterLabel = siteConfig.comparison.starterLabel,
+  proLabel = siteConfig.comparison.proLabel,
+  enterpriseLabel = siteConfig.comparison.enterpriseLabel,
   comparisonRows = defaultRows,
-  buttonLabel = "Start free trial",
-  buttonUrl = "#start",
-  secondaryButtonLabel = "Talk to sales",
-  secondaryButtonUrl = "#contact",
+  buttonLabel = siteConfig.comparison.buttonLabel,
+  buttonUrl = siteConfig.comparison.buttonUrl,
+  secondaryButtonLabel = siteConfig.comparison.secondaryButtonLabel,
+  secondaryButtonUrl = siteConfig.comparison.secondaryButtonUrl,
 } = Astro.props as {
   heading?: string;
   subheading?: string;

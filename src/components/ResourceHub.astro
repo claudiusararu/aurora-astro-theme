@@ -1,25 +1,18 @@
 ---
+import { siteConfig } from "~/config/site";
+
 interface Props {
   eyebrow?: string;
   title?: string;
   description?: string;
 }
 
-const { eyebrow = "resource hub", title = "Start faster with Aurora", description = "Guides, templates, and operating notes for teams building calmer project systems." } = Astro.props;
-const cards = [
-  {
-    "title": "Quick-start guide",
-    "description": "Set up your first workspace, invite teammates, and create a repeatable project rhythm."
-  },
-  {
-    "title": "Workflow checklist",
-    "description": "A practical checklist for planning boards, statuses, roles, and launch routines."
-  },
-  {
-    "title": "Template library",
-    "description": "Reusable docs for sprint planning, status updates, and async handoffs."
-  }
-];
+const {
+  eyebrow = siteConfig.resourceHub.eyebrow,
+  title = siteConfig.resourceHub.heading,
+  description = siteConfig.resourceHub.subheading,
+} = Astro.props;
+const cards = siteConfig.resourceHub.cards;
 ---
 
 <section class="py-16 md:py-24 border-b border-line-soft">

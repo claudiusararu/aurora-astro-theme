@@ -1,36 +1,17 @@
 ---
+import { siteConfig } from "~/config/site";
+
 interface TeamMember {
   name: string;
   role: string;
   photo?: { url: string; alt?: string } | null;
 }
 
-const defaultTeam: TeamMember[] = [
-  {
-    name: "Alex Morrison",
-    role: "Chief Executive Officer",
-    photo: { url: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=380&auto=format&fit=crop&q=80", alt: "Alex Morrison" },
-  },
-  {
-    name: "Sarah Chen",
-    role: "Head of Product",
-    photo: { url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=380&auto=format&fit=crop&q=80", alt: "Sarah Chen" },
-  },
-  {
-    name: "James Okoro",
-    role: "Lead Engineer",
-    photo: { url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=380&auto=format&fit=crop&q=80", alt: "James Okoro" },
-  },
-  {
-    name: "Elena Vasquez",
-    role: "Design Director",
-    photo: { url: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=380&auto=format&fit=crop&q=80", alt: "Elena Vasquez" },
-  },
-];
+const defaultTeam = siteConfig.team.members as readonly TeamMember[];
 
 const {
-  heading = "The people behind Aurora",
-  subheading = "A small, focused team building tools that help modern teams work better.",
+  heading = siteConfig.team.heading,
+  subheading = siteConfig.team.subheading,
   memberItems = defaultTeam,
 } = Astro.props as {
   heading?: string;

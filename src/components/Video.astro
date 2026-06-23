@@ -1,14 +1,16 @@
 ---
+import { siteConfig } from "~/config/site";
+
 interface ImageAsset {
   url: string;
   alt?: string;
 }
 
 const {
-  heading = "See Aurora in action",
-  subheading = "A two-minute walkthrough of the features that help teams ship faster.",
-  provider = "youtube",
-  videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  heading = siteConfig.video.heading,
+  subheading = siteConfig.video.subheading,
+  provider = siteConfig.video.provider,
+  videoUrl = siteConfig.video.videoUrl,
   poster = null,
 } = Astro.props as {
   heading?: string;

@@ -1,36 +1,17 @@
 ---
+import { siteConfig } from "~/config/site";
+
 interface TimelineEvent {
   year: string;
   title: string;
   description: string;
 }
 
-const defaultEvents: TimelineEvent[] = [
-  {
-    year: "2021",
-    title: "The beginning",
-    description: "Founded with a simple idea: project management should feel invisible. Two engineers, one apartment, zero funding.",
-  },
-  {
-    year: "2022",
-    title: "First 1,000 users",
-    description: "Launched the public beta. Word spread through engineering communities. Reached product-market fit within six months.",
-  },
-  {
-    year: "2023",
-    title: "Series A",
-    description: "Raised $12M to scale the platform. Expanded the team to 25. Shipped real-time collaboration and API access.",
-  },
-  {
-    year: "2024",
-    title: "Enterprise ready",
-    description: "SOC 2 certified. SSO, audit logs, and advanced permissions. Serving teams from 5 to 5,000 members.",
-  },
-];
+const defaultEvents = siteConfig.timeline.items as readonly TimelineEvent[];
 
 const {
-  heading = "Our journey",
-  subheading = "From a two-person team to powering thousands of workflows.",
+  heading = siteConfig.timeline.heading,
+  subheading = siteConfig.timeline.subheading,
   timelineItems = defaultEvents,
 } = Astro.props as {
   heading?: string;

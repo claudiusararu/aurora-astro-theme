@@ -1,5 +1,6 @@
 ---
 import Icon from "~/components/Icon.astro";
+import { siteConfig } from "~/config/site";
 
 type BackgroundMode = "default" | "color" | "image";
 type LayoutType = "centered" | "centered-no-image" | "split-right" | "split-left";
@@ -26,10 +27,10 @@ interface Props {
 }
 
 const {
-  eyebrow = "",
-  heading = "Optimize your workflow.\nAccelerate your growth.",
+  eyebrow = siteConfig.hero.eyebrow,
+  heading = siteConfig.hero.heading,
   headingSize = 96,
-  subheading = "The modern platform that helps teams move faster, stay organized, and deliver results without the complexity.",
+  subheading = siteConfig.hero.subheading,
   subheadingSize = 19,
   textColor = "#07070b",
   layoutType = "centered",
@@ -38,11 +39,11 @@ const {
   backgroundImage = null,
   heroImage = null,
   primaryCtaEnabled = true,
-  primaryCta = "Start for free",
-  primaryCtaUrl = "#start",
+  primaryCta = siteConfig.hero.primaryCta,
+  primaryCtaUrl = siteConfig.hero.primaryCtaUrl,
   secondaryCtaEnabled = true,
-  secondaryCta = "Watch demo",
-  secondaryCtaUrl = "#demo",
+  secondaryCta = siteConfig.hero.secondaryCta,
+  secondaryCtaUrl = siteConfig.hero.secondaryCtaUrl,
 } = Astro.props;
 
 function imageUrl(value: ImageValue) {

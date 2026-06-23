@@ -1,5 +1,6 @@
 ---
 import Icon from "~/components/Icon.astro";
+import { siteConfig } from "~/config/site";
 
 type ImageTextLayout = "image-right" | "image-left";
 type ImageTextVisual = "analytics" | "monitoring";
@@ -22,13 +23,13 @@ const {
   layout = "image-right",
   visualType = "analytics",
   image = null,
-  eyebrow = "INTELLIGENCE",
-  heading = "Feature intelligence built for modern product teams",
-  body = "Understand how features perform from the moment they ship. Track adoption curves, identify friction points, and measure real impact on your product metrics, all in one place.",
+  eyebrow = siteConfig.imageText.eyebrow,
+  heading = siteConfig.imageText.heading,
+  body = siteConfig.imageText.body,
   checklist = "",
   checks = "",
-  learnMoreLabel = "Learn more",
-  learnMoreUrl = "#learn",
+  learnMoreLabel = siteConfig.imageText.learnMoreLabel,
+  learnMoreUrl = siteConfig.imageText.learnMoreUrl,
 } = Astro.props;
 
 const imageUrl = typeof image === "string" ? image : image?.url;
