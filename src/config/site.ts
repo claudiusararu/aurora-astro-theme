@@ -7,7 +7,7 @@ export const siteConfig = {
   // ─── Site Identity ───────────────────────────────────
   name: "Aurora",
   tagline: "The modern platform for ambitious teams",
-  url: "https://example.com",
+  url: import.meta.env.PUBLIC_SITE_URL || "https://example.com", // The live demo build sets PUBLIC_SITE_URL; buyers just replace the fallback.
   logo: "", // Leave empty to use the built-in theme mark, or set a path like /logo.svg
   favicon: "/favicon.svg",
 
